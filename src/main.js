@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import * as MathUtils from 'three/src/math/MathUtils.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import {createGround} from './objects/ground.js';
+import {alignGround} from './utils/placement.js';
+import * as Freecam from './cameras/freecam.js';
 let Clock = new THREE.Clock();
 console.log("OK")
 
@@ -13,17 +15,20 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
+//Freecam
+Freecam.enableFreeCam(camera, renderer);
+
+const ground = createGround();
+scene.add(ground);
+
 const loader = new GLTFLoader();
-
-
-
 let mixer, clip, action;
 
 loader.load( './src/objects/models/player.gltf', function ( gltf ) {
 
   gltf.scene.scale.set(0.2,0.2,0.2);
   gltf.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
-  gltf.scene.position.z=0.9
+  alignGround(ground, gltf.scene);
 	scene.add( gltf.scene );
   
   mixer = new THREE.AnimationMixer( gltf.scene );
@@ -37,7 +42,6 @@ loader.load( './src/objects/models/player.gltf', function ( gltf ) {
 
 } );
 
-scene.add(createGround());
 scene.add(new THREE.AmbientLight(0x404040, 50));
 
 camera.position.x = 0;// <----->
@@ -47,7 +51,8 @@ camera.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), MathUtils.degToRad(60));
 
 function animate() {
 	requestAnimationFrame( animate );
-  if(mixer) mixer.update( Clock.getDelta() ); //If mixer ready
+  if(mixer) mixer.update( Clock.getDelta()*1.4 ); //If mixer ready
+  Freecam.updateFreeCamKeys()//Freecam
 	renderer.render( scene, camera );
 
 }
