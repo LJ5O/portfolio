@@ -22,10 +22,10 @@ const ground = createGround();
 scene.add(ground);
 
 const loader = new GLTFLoader();
-let mixer, clip, action;
+let mixer, clip, action, playerModel;
 
 loader.load( './src/objects/models/player.gltf', function ( gltf ) {
-
+  playerModel = gltf;
   gltf.scene.scale.set(0.2,0.2,0.2);
   gltf.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
   alignGround(ground, gltf.scene);
@@ -49,10 +49,68 @@ camera.position.y = -4;// ^^ / vv
 camera.position.z = 4;// ^-----v
 camera.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), MathUtils.degToRad(60));
 
+/* ----- -*
+MOVEMENT
+-----------*/
+
+const PLAYER_SPEED = 0.015;
+const playerDirection = new THREE.Vector3(0, 0, 0);
+
+// Events to listen keyboard inputs
+document.addEventListener('keydown', handleKeyDown);
+document.addEventListener('keyup', handleKeyUp);
+
+//Managing keys
+function handleKeyDown(event) {
+  switch (event.code) {
+    case 'ArrowUp':
+    case 'KeyW':
+      playerDirection.y = -1; // Up
+      break;
+    case 'ArrowDown':
+    case 'KeyS':
+      playerDirection.y = 1; // Back
+      break;
+    case 'ArrowLeft':
+    case 'KeyA':
+      playerDirection.x = -1; // Left
+      break;
+    case 'ArrowRight':
+    case 'KeyD':
+      playerDirection.x = 1; // Right
+      break;
+  }
+}
+
+function handleKeyUp(event) {
+  switch (event.code) {
+    case 'ArrowUp':
+    case 'KeyW':
+    case 'ArrowDown':
+    case 'KeyS':
+      playerDirection.y = 0; // Arrêter le mouvement vertical
+      break;
+    case 'ArrowLeft':
+    case 'KeyA':
+    case 'ArrowRight':
+    case 'KeyD':
+      playerDirection.x = 0; // Arrêter le mouvement horizontal
+      break;
+  }
+}
+
+function updatePlayerPosition() {
+  const delta = playerDirection.clone().multiplyScalar(PLAYER_SPEED);
+  playerModel.scene.position.add(delta);
+  camera.position.add(delta);
+}
+
 function animate() {
 	requestAnimationFrame( animate );
   if(mixer) mixer.update( Clock.getDelta()*1.4 ); //If mixer ready
-  Freecam.updateFreeCamKeys()//Freecam
+
+  updatePlayerPosition();
+  //Freecam.updateFreeCamKeys()//Freecam
 	renderer.render( scene, camera );
 
 }
