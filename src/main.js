@@ -27,7 +27,7 @@ let mixer, clip, action, playerModel;
 loader.load( './src/objects/models/player.gltf', function ( gltf ) {
   playerModel = gltf;
   gltf.scene.scale.set(0.2,0.2,0.2);
-  //gltf.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(-90));
+  gltf.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
   alignGround(ground, gltf.scene);
 	scene.add( gltf.scene );
   
@@ -105,13 +105,15 @@ function updatePlayerPosition() {
   const delta = playerDirection.clone().multiplyScalar(PLAYER_SPEED);
   playerModel.scene.position.add(delta);
   camera.position.add(delta);
-
-  const angle = Math.atan2(playerDirection.x, -playerDirection.y);
-  const targetRotation = new THREE.Quaternion();
-  targetRotation.setFromAxisAngle(new THREE.Vector3(0, 1, 0), angle);
-  playerRotation.slerp(targetRotation, 0.1);
-  playerModel.scene.setRotationFromQuaternion(playerRotation);
-  playerModel.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
+const ROTATION_SPEED = 0.05; // Vitesse de rotation
+  if (playerDirection.lengthSq() > 0) {
+    const angle = Math.atan2(playerDirection.x, -playerDirection.y);
+    const targetRotation = new THREE.Quaternion();
+    targetRotation.setFromAxisAngle(new THREE.Vector3(0, 1, 0), angle);
+    playerRotation.slerp(targetRotation, ROTATION_SPEED);
+    playerModel.scene.setRotationFromQuaternion(playerRotation);
+    playerModel.scene.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), MathUtils.degToRad(90));
+  }
 }
 
 function animate() {
