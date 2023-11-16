@@ -24,6 +24,25 @@ export async function addAssetsOnScene(scene){
     const ground = createGround();
     scene.add(ground);
 
+    /* --------------------
+         ADDING FENCES
+        -------------------- */
+    const groundHitBox = new THREE.Box3().setFromObject(ground); // Calculating ground size
+    const groundXSize = groundHitBox.max.x - groundHitBox.min.x;
+    const groundySize = groundHitBox.max.y - groundHitBox.min.y;
+
+    let fences = [];//List of created fences
+    const fence = await loadModel('src/objects/models/fence.gltf');//Loading fence model
+    fence.scene.scale.set(0.05,0.05,0.05);
+    fence.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));//Must be standing up
+    
+    const fenceHitBox = new THREE.Box3().setFromObject(fence.scene);
+    const fenceWidth = fenceHitBox.max.y - fenceHitBox.min.y;
+
+    alignGround(ground, fence.scene);
+    scene.add(fence.scene);
+
+
     const player = await loadModel('src/objects/models/player.gltf');//Loading player
     player.scene.scale.set(0.2,0.2,0.2);
     alignGround(ground, player.scene);
