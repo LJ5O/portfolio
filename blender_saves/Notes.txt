@@ -1,0 +1,2 @@
+Personal memo :
+Working with generated textures : https://blender.stackexchange.com/questions/239475/how-can-i-pack-procedural-textures-into-a-gltf-file
