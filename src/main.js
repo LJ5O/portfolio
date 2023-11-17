@@ -38,7 +38,7 @@ Animations.addAnimationMixerOnMesh(assets.player, ["Walk"]);
 function animate() {
 	requestAnimationFrame( animate );
 
-  PlayerMovement.updatePlayerPositionAnimation(assets.player, camera);//Updating player position and rotation
+  PlayerMovement.updatePlayerPositionAnimation(assets.player, camera, scene);//Updating player position and rotation
   Animations.updateAnimations(Clock.getDelta());//Playing animations
 
 	renderer.render( scene, camera );//Calculating and redering new frame

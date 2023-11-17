@@ -45,14 +45,36 @@ export function handleKeyDown(event) {
     }
   }
 
-  export function updatePlayerPositionAnimation(player, camera) {
+  export function updatePlayerPositionAnimation(player, camera, scene) {
     /* Function called in the main loop
         Used to calculate the position and orientation of the player
-        Also used to start and stop walking animation */
+        Also used to start and stop walking animation 
+        Takes player, camera and scene*/
+
+    //COLLIDERS
+    const raycaster = new THREE.Raycaster();//Creating a raycaster from the player
+    const rayDirection = new THREE.Vector3(playerDirection.x, playerDirection.y, 0).normalize();
+    raycaster.set(player.scene.position, rayDirection);
+
+    const intersects = raycaster.intersectObjects(scene.children, true);//Gettings objects on the path of this raycaster
+
+    const allowedDistance = 0.4;
+    const collisionThreshold = 0.2;
+    for(let i=0; i<intersects.length; i++){
+      if(intersects[i].distance>collisionThreshold && intersects[i].distance<allowedDistance){
+        //Valid colliding object, not too close ( player leg / arm ), but not too far
+        console.log(intersects[i]);
+        playerDirection.set(0, 0, 0);
+        break;
+      }
+    }
+
+    //MOVING
     const delta = playerDirection.clone().multiplyScalar(PLAYER_SPEED);
     player.scene.position.add(delta);
     camera.position.add(delta);//The camera must follow the player
 
+    //ANIMATING
     if (playerDirection.length() > 0) {//If a movement key is pressed ( or something in playerDirection )
         if(!player.animationActions.Walk.isRunning()) player.animationActions.Walk.play();//Playing walk animation
 

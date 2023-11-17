@@ -26,65 +26,60 @@ export async function addAssetsOnScene(scene){
 
     scene.add(new THREE.AmbientLight(0x404040, 50));//Light, required to see
 
-    const ground = createGround();
-    scene.add(ground);
-
     /* --------------------
-         ADDING FENCES
+       ADDING GROUND AND FENCES
         -------------------- */
-    const groundHitBox = new THREE.Box3().setFromObject(ground); // Calculating ground size
-    const groundXSize = groundHitBox.max.x - groundHitBox.min.x;
-    const groundySize = groundHitBox.max.y - groundHitBox.min.y;
-
     let fences = [];//List of created fences
     const fenceModel = await loadModel('src/objects/models/fence.gltf');
 
     //Getting width of one fence
     fenceModel.scene.scale.set(0.05, 0.05, 0.05);
-    fenceModel.scene.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), MathUtils.degToRad(90));
+    fenceModel.scene.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), MathUtils.degToRad(90));//Must be standing up
     const fenceHitBox = new THREE.Box3().setFromObject(fenceModel.scene);
     const fenceWidth = fenceHitBox.max.y - fenceHitBox.min.y;
 
+    //Creating the ground
+    const ground = createGround(6*fenceWidth, 6*fenceWidth);
+    scene.add(ground);
+    const groundHitBox = new THREE.Box3().setFromObject(ground); // Calculating ground size
+    const groundXSize = groundHitBox.max.x - groundHitBox.min.x;
+    const groundySize = groundHitBox.max.y - groundHitBox.min.y;
+
     for(let i = 0; i<groundXSize; i=i+fenceWidth){
-        let fence1 = await loadModel('src/objects/models/fence.gltf');//Loading fences ( saved in cache, so file is loaded one time only )
-        let fence2 = await loadModel('src/objects/models/fence.gltf');//This loop will create the 4 walls of fences around the ground
-        let fence3 = await loadModel('src/objects/models/fence.gltf');
-        let fence4 = await loadModel('src/objects/models/fence.gltf');
+        let fence1 = fenceModel.scene.clone()
+        let fence2 = fenceModel.scene.clone()
+        let fence3 = fenceModel.scene.clone()
+        let fence4 = fenceModel.scene.clone()
 
-        fence1.scene.scale.set(0.05,0.05,0.05);
-        fence2.scene.scale.set(0.05,0.05,0.05);
-        fence3.scene.scale.set(0.05,0.05,0.05);
-        fence4.scene.scale.set(0.05,0.05,0.05);
+        fence1.scale.set(0.05,0.05,0.05);
+        fence2.scale.set(0.05,0.05,0.05);
+        fence3.scale.set(0.05,0.05,0.05);
+        fence4.scale.set(0.05,0.05,0.05);
 
-        fence1.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));//Must be standing up
-        fence2.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
-        fence1.scene.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(90));//And correctly rotated for that face
-        fence2.scene.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(90));
+        fence1.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(90));//Correctly rotated for that face
+        fence2.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(90));
 
-        fence3.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
-        fence4.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
+        fence1.position.y = groundHitBox.max.y - 0.25;//TOP SIDE
+        fence1.position.x = groundHitBox.min.x + fenceWidth + i;
 
-        fence1.scene.position.y = groundHitBox.max.y;//TOP SIDE
-        fence1.scene.position.x = groundHitBox.min.x + i;
+        fence2.position.y = groundHitBox.min.y + 0.25;//BOTTOM SIDE
+        fence2.position.x = groundHitBox.max.x - i;
 
-        fence2.scene.position.y = groundHitBox.min.y;//BOTTOM SIDE
-        fence2.scene.position.x = groundHitBox.max.x - i;
+        fence3.position.y = groundHitBox.min.y + i ;//RIGHT SIDE
+        fence3.position.x = groundHitBox.max.x - 0.25;
 
-        fence3.scene.position.y = groundHitBox.min.y + i ;//RIGHT SIDE
-        fence3.scene.position.x = groundHitBox.max.x;
+        fence4.position.y = groundHitBox.max.y - fenceWidth - i;//LEFT SIDE
+        fence4.position.x = groundHitBox.min.x + 0.25;
 
-        fence4.scene.position.y = groundHitBox.max.y - i;//LEFT SIDE
-        fence4.scene.position.x = groundHitBox.min.x;
+        alignGround(ground, fence1);
+        alignGround(ground, fence2);
+        alignGround(ground, fence3);
+        alignGround(ground, fence4);
 
-        alignGround(ground, fence1.scene);
-        alignGround(ground, fence2.scene);
-        alignGround(ground, fence3.scene);
-        alignGround(ground, fence4.scene);
-
-        scene.add(fence1.scene);
-        scene.add(fence2.scene);
-        scene.add(fence3.scene);
-        scene.add(fence4.scene);
+        scene.add(fence1);
+        scene.add(fence2);
+        scene.add(fence3);
+        scene.add(fence4);
 
         fences.push(fence1);
         fences.push(fence2);
@@ -101,6 +96,7 @@ export async function addAssetsOnScene(scene){
 	
     return {
         ground: ground,
+        fenceScenes: fences,
         player: player,
     };
 }

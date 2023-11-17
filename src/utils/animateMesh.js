@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-const ANIMATION_SPEED_MULTIPLIER = 1.4;
+const ANIMATION_SPEED_MULTIPLIER = 1.6;
 let mixersToUpdateEachFrame = [];
 
 export function addAnimationMixerOnMesh(mesh, actions){
