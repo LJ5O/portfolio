@@ -39,7 +39,7 @@ export async function addAssetsOnScene(scene){
     const fenceWidth = fenceHitBox.max.y - fenceHitBox.min.y;
 
     //Creating the ground
-    const ground = createGround(6*fenceWidth, 6*fenceWidth);
+    const ground = createGround(35*fenceWidth, 35*fenceWidth);
     scene.add(ground);
     const groundHitBox = new THREE.Box3().setFromObject(ground); // Calculating ground size
     const groundXSize = groundHitBox.max.x - groundHitBox.min.x;
@@ -87,6 +87,48 @@ export async function addAssetsOnScene(scene){
         fences.push(fence4);
     }
 
+    //Adding Paths
+    //Works like fences
+    let pathTiles = [];//List of created pathTiles
+    const pathTilesModel = await loadModel('src/objects/models/path.gltf');
+    pathTilesModel.scene.scale.set(0.2,0.01,0.2);
+    pathTilesModel.scene.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), MathUtils.degToRad(90));//Must be on the ground
+    alignGround(ground, pathTilesModel.scene);
+
+    const pathTileHitbox = new THREE.Box3().setFromObject(pathTilesModel.scene);
+    const pathTileWidth = pathTileHitbox.max.y - pathTileHitbox.min.y;
+
+    for(let i = 0; i<(groundXSize-pathTileWidth)/2; i=i+pathTileWidth){//Loop to add all path tiles, except the last
+        const pathUp = pathTilesModel.scene.clone();//Vertical
+        const pathLeft = pathTilesModel.scene.clone();//Horizontal
+        const pathDown = pathTilesModel.scene.clone();
+        const pathRight = pathTilesModel.scene.clone();
+
+        pathUp.position.y = i;
+        pathLeft.position.x = -i;
+        pathDown.position.y = -i;
+        pathRight.position.x = i;
+
+        pathLeft.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(90));//Correctly rotated for that face
+        pathRight.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(90));
+
+        alignGround(ground, pathUp);
+        alignGround(ground, pathLeft);
+        alignGround(ground, pathDown);
+        alignGround(ground, pathRight);
+
+        scene.add(pathUp);
+        scene.add(pathLeft);
+        scene.add(pathDown);
+        scene.add(pathRight);
+
+        pathTiles.push(pathUp);
+        pathTiles.push(pathLeft);
+        pathTiles.push(pathDown);
+        pathTiles.push(pathRight);
+    }
+
+
 
     const player = await loadModel('src/objects/models/player.gltf');//Loading player
     player.scene.scale.set(0.2,0.2,0.2);
@@ -98,5 +140,6 @@ export async function addAssetsOnScene(scene){
         ground: ground,
         fenceScenes: fences,
         player: player,
+        pathTiles: pathTiles
     };
 }
