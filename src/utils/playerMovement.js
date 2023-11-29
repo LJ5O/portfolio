@@ -63,7 +63,6 @@ export function handleKeyDown(event) {
     for(let i=0; i<intersects.length; i++){
       if(intersects[i].distance>collisionThreshold && intersects[i].distance<allowedDistance){
         //Valid colliding object, not too close ( player leg / arm ), but not too far
-        console.log(intersects[i]);
         playerDirection.set(0, 0, 0);
         break;
       }
