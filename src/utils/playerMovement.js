@@ -58,10 +58,11 @@ export function handleKeyDown(event) {
 
     const intersects = raycaster.intersectObjects(scene.children, true);//Gettings objects on the path of this raycaster
 
-    const allowedDistance = 0.4;
+    const collidingDistance = 0.5;
     const collisionThreshold = 0.2;
     for(let i=0; i<intersects.length; i++){
-      if(intersects[i].distance>collisionThreshold && intersects[i].distance<allowedDistance){
+      //if(intersects[i].distance<2 && intersects[i].distance>collisionThreshold)console.log(intersects[i]);
+      if(intersects[i].distance>collisionThreshold && intersects[i].distance<collidingDistance){
         //Valid colliding object, not too close ( player leg / arm ), but not too far
         playerDirection.set(0, 0, 0);
         break;

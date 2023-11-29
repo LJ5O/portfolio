@@ -128,6 +128,20 @@ export async function addAssetsOnScene(scene){
         pathTiles.push(pathRight);
     }
 
+    /* --------------------
+    ADDING TREES
+    -------------------- */
+    const treeOakModel = await loadModel('src/objects/models/tree1.gltf');
+    const treeAppleOakModel = await loadModel('src/objects/models/tree2.gltf');
+    const treeSakuraModel = await loadModel('src/objects/models/tree3.gltf');
+    const treePineModel = await loadModel('src/objects/models/tree4.gltf');
+
+    treeSakuraModel.scene.scale.set(0.3,0.3,0.3);
+    treeSakuraModel.scene.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), MathUtils.degToRad(90));
+    treeSakuraModel.scene.position.x = 4;
+    treeSakuraModel.scene.position.y = 4;
+    alignGround(ground, treeSakuraModel.scene);
+    scene.add(treeSakuraModel.scene);
 
 
     const player = await loadModel('src/objects/models/player.gltf');//Loading player
