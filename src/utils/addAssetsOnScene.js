@@ -136,10 +136,14 @@ export async function addAssetsOnScene(scene){
     const treeSakuraModel = await loadModel('src/objects/models/tree3.gltf');
     const treePineModel = await loadModel('src/objects/models/tree4.gltf');
 
-    treeSakuraModel.scene.scale.set(0.3,0.3,0.3);
-    treeSakuraModel.scene.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), MathUtils.degToRad(90));
-    treeSakuraModel.scene.position.x = 4;
-    treeSakuraModel.scene.position.y = 4;
+    function prepareTree(treeModel){
+        treeModel.scene.scale.set(0.28,0.28,0.28);
+        treeModel.scene.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), MathUtils.degToRad(90));
+    }
+    prepareTree(treeOakModel);
+    prepareTree(treeAppleOakModel);
+    prepareTree(treeSakuraModel);
+    prepareTree(treePineModel);
     alignGround(ground, treeSakuraModel.scene);
     scene.add(treeSakuraModel.scene);
 
