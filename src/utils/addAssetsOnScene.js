@@ -147,11 +147,34 @@ export async function addAssetsOnScene(scene){
     prepareTree(treeSakuraModel);
     prepareTree(treePineModel);
 
-    treeAppleOakModel.scene.position.x=5;//TEST, remove this when implementing trees
+    treeAppleOakModel.scene.position.x=-5;//TEST, remove this when implementing trees
 
     scene.add(treeAppleOakModel.scene);
 
+    /* --------------------
+    ADDING NAME & JOB
+    -------------------- */
+    let nameplateModel;
+    if(true){//Will be used later for localization
+        nameplateModel = await loadModel('src/objects/models/NameFR.gltf');
+    }else if(false){
+        nameplateModel = await loadModel('src/objects/models/NameJP.gltf');
+    }else{
+        nameplateModel = await loadModel('src/objects/models/NameEN.gltf');
+    }
+    nameplateModel.scene.scale.set(0.6,0.6,0.6);
+    nameplateModel.scene.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), MathUtils.degToRad(60));
+    nameplateModel.scene.position.x = 2;
+    nameplateModel.scene.position.y = 2;
+    alignGround(ground, nameplateModel.scene);
+    nameplateModel.scene.position.z += 0.2;
 
+    scene.add(nameplateModel.scene);
+
+
+    /* --------------------
+    ADDING PLAYER
+    -------------------- */
     const player = await loadModel('src/objects/models/player.gltf');//Loading player
     player.scene.scale.set(0.2,0.2,0.2);
     alignGround(ground, player.scene);
@@ -162,6 +185,7 @@ export async function addAssetsOnScene(scene){
         ground: ground,
         fenceScenes: fences,
         player: player,
-        pathTiles: pathTiles
+        pathTiles: pathTiles,
+        nameplateModel: nameplateModel
     };
 }

@@ -1,4 +1,4 @@
 node_modules/
 
 #backup files from Blender
-blender_saves/*.blend1
+*.blend1
