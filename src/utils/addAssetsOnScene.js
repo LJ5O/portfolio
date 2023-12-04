@@ -147,9 +147,23 @@ export async function addAssetsOnScene(scene){
     prepareTree(treeSakuraModel);
     prepareTree(treePineModel);
 
-    treeAppleOakModel.scene.position.x=-5;//TEST, remove this when implementing trees
+    const forestPinesLocations = [{x:-3,y:-3}, {x:-4,y:-5.9}, {x:-6.5,y:-4.3}, {x:-9.1,y:-3.1}, {x:-12.8,y:-4.35}, {x:-15.7,y:-3.3}, {x:-19.6,y:-2.6}, {x:-22.2,y:-5.3}, {x:-9.7,y:-6.2}
+        , {x:-15.7,y:-7}, {x:-18.9,y:-5.8}, {x:-20.8,y:-8.5}, {x:-17.5,y:-9.6}, {x:-12.9,y:-8.45}, {x:-9.76,y:-9.6}, {x:-20.8,y:-8.5}, {x:-6.75,y:-8.25}, {x:-23,y:-10.5}
+        , {x:-21,y:-11.9}, {x:-2.9,y:-8.4}, {x:-18.6,y:-12.4}, {x:-15,y:-10.8}, {x:-11.9,y:-8.4}, {x:-11.9,y:-10.8}, {x:-9,y:-12.45}, {x:-5,y:-10.3}, {x:-1.87,y:-10.9}
+        , {x:-23,y:-14.4}, {x:-20.25,y:-15.7}, {x:-17.7,y:-14.6}, {x:-14.8,y:-14.16}, {x:-13,y:-14.4}, {x:-11,y:-13.2}, {x:-8,y:-14.6}, {x:-6,y:-13}, {x:-3.5,y:-13.9}, {x:-2,y:-15.5}
+        , {x:-21.78,y:-17.76}, {x:-18.48,y:-17.6}, {x:-16.17,y:-18.5}, {x:-13.9,y:-16.8}, {x:-10.57,y:-16.3}, {x:-11.6,y:-18.36}, {x:-13.4,y:-20}, {x:-8.3,y:-18}, {x:-5.45,y:-16.6}
+        , {x:-3.67,y:-18}, {x:-23.1,y:-20.2}, {x:-20.5,y:-21}, {x:-18.3,y:-20.1}, {x:-16,y:-21.5}, {x:-10.78,y:-21}, {x:-6.3,y:-20.1}, {x:-4,y:-20.8}, {x:-1.8,y:-19.6}
+        , {x:-21.9,y:-22.75}, {x:-18.6,y:-22.6}, {x:-14.8,y:-23.3}, {x:-13,y:-22}, {x:-23,y:-14.4}, {x:-11.1,y:-23.1}, {x:-23,y:-14.4}, {x:-8.5,y:-21.8}, {x:-23,y:-14.4}, {x:-7,y:-22.8}
+        , {x:-4.1,y:-23.3}, {x:-2.2,y:-22.93}];
+        
 
-    scene.add(treeAppleOakModel.scene);
+    forestPinesLocations.forEach(newPos => {
+        const pineClone = treePineModel.scene.clone();
+        pineClone.position.x = newPos.x;
+        pineClone.position.y = newPos.y;
+        pineClone.rotation.y = Math.random() * Math.PI * 2;
+        scene.add(pineClone);
+    });
 
     /* --------------------
     ADDING NAME & JOB

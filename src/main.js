@@ -6,7 +6,7 @@ import * as Animations from './utils/animateMesh.js';
 let Clock = new THREE.Clock();
 THREE.Cache.enabled = true;//So we can request several time the same file without worrying : https://threejs.org/docs/#api/en/loaders/FileLoader
 
-const APP_DEBUG = false;//Turn true to show player position in browser console
+const APP_DEBUG = true;//Turn true to show player position in browser console
 
 /* --------------------- */
 /* |  SCENE CREATION   | */
