@@ -80,11 +80,12 @@ export async function addAssetsOnScene(scene){
     }
 
     //Small garden
-    const topLeftCorner = {x:5, y:-14}
+    //Everything here was carefully adjusted for the given size, modifying this would require more adjustements on fences position
+    const topLeftCorner = {x:4.56, y:-18}
     const smallGardenHeight = 11*fenceWidth;
-    const smallGardenWidth = 5*fenceWidth;
+    const smallGardenWidth = 7*fenceWidth;
 
-    for(let i = 0; i<smallGardenHeight; i=i+fenceWidth){
+    for(let i = 0; i<smallGardenHeight; i=i+fenceWidth){ //Y axis
         const fence1 = fenceModel.scene.clone();
         const fence2 = fenceModel.scene.clone();
 
@@ -97,20 +98,28 @@ export async function addAssetsOnScene(scene){
         fence2.position.y = topLeftCorner.y + smallGardenWidth;
 
         scene.add(fence1);
-        scene.add(fence2);
-
+        fences.push(fence1);
+        if(i+fenceWidth<smallGardenHeight){
+            scene.add(fence2);//We don't place the last one, that's the entrance
+            fences.push(fence2);
+        }
     }
-    for(let i = 0; i<smallGardenWidth; i=i+fenceWidth){
+    const stopValue = smallGardenWidth-fenceWidth;//Was adjusted so the fences fit perfectly
+    for(let i = 0; i<stopValue; i=i+fenceWidth){ //X axis
         const fence1 = fenceModel.scene.clone();
         const fence2 = fenceModel.scene.clone();
 
         fence1.position.y = topLeftCorner.y + i;
-        fence1.position.x = topLeftCorner.x - fenceWidth;
+        fence1.position.x = topLeftCorner.x - fenceWidth + 0.2;
         fence2.position.y = topLeftCorner.y - i + smallGardenWidth - fenceWidth;
         fence2.position.x = topLeftCorner.x + smallGardenHeight;
 
-        scene.add(fence1);
+        if(i+fenceWidth<stopValue){
+            scene.add(fence1);
+            fences.push(fence1);
+        }
         scene.add(fence2);
+        fences.push(fence2);
     }
 
     /* --------------------
@@ -219,10 +228,10 @@ export async function addAssetsOnScene(scene){
     scene.add( player.scene );
 	
     return {
-        //ground: ground,
-        //fenceScenes: fences,
+        ground: ground,
+        fenceScenes: fences,
         player: player,
-        //pathTiles: pathTiles,
+        pathTiles: pathTiles,
         nameplateModel: nameplateModel
     };
 }
