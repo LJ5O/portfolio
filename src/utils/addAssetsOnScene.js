@@ -45,16 +45,13 @@ export async function addAssetsOnScene(scene){
     const groundXSize = groundHitBox.max.x - groundHitBox.min.x;
     const groundySize = groundHitBox.max.y - groundHitBox.min.y;
 
+    alignGround(ground, fenceModel.scene);
+
     for(let i = 0; i<groundXSize; i=i+fenceWidth){
         let fence1 = fenceModel.scene.clone()
         let fence2 = fenceModel.scene.clone()
         let fence3 = fenceModel.scene.clone()
         let fence4 = fenceModel.scene.clone()
-
-        fence1.scale.set(0.05,0.05,0.05);
-        fence2.scale.set(0.05,0.05,0.05);
-        fence3.scale.set(0.05,0.05,0.05);
-        fence4.scale.set(0.05,0.05,0.05);
 
         fence1.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(90));//Correctly rotated for that face
         fence2.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(90));
@@ -71,11 +68,6 @@ export async function addAssetsOnScene(scene){
         fence4.position.y = groundHitBox.max.y - fenceWidth - i;//LEFT SIDE
         fence4.position.x = groundHitBox.min.x + 0.25;
 
-        alignGround(ground, fence1);
-        alignGround(ground, fence2);
-        alignGround(ground, fence3);
-        alignGround(ground, fence4);
-
         scene.add(fence1);
         scene.add(fence2);
         scene.add(fence3);
@@ -87,7 +79,43 @@ export async function addAssetsOnScene(scene){
         fences.push(fence4);
     }
 
-    //Adding Paths
+    //Small garden
+    const topLeftCorner = {x:5, y:-14}
+    const smallGardenHeight = 11*fenceWidth;
+    const smallGardenWidth = 5*fenceWidth;
+
+    for(let i = 0; i<smallGardenHeight; i=i+fenceWidth){
+        const fence1 = fenceModel.scene.clone();
+        const fence2 = fenceModel.scene.clone();
+
+        fence1.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(90));//Correctly rotated for that face
+        fence2.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(90));
+
+        fence1.position.x = topLeftCorner.x + i;
+        fence1.position.y = topLeftCorner.y;
+        fence2.position.x = topLeftCorner.x - i + smallGardenHeight;
+        fence2.position.y = topLeftCorner.y + smallGardenWidth;
+
+        scene.add(fence1);
+        scene.add(fence2);
+
+    }
+    for(let i = 0; i<smallGardenWidth; i=i+fenceWidth){
+        const fence1 = fenceModel.scene.clone();
+        const fence2 = fenceModel.scene.clone();
+
+        fence1.position.y = topLeftCorner.y + i;
+        fence1.position.x = topLeftCorner.x - fenceWidth;
+        fence2.position.y = topLeftCorner.y - i + smallGardenWidth - fenceWidth;
+        fence2.position.x = topLeftCorner.x + smallGardenHeight;
+
+        scene.add(fence1);
+        scene.add(fence2);
+    }
+
+    /* --------------------
+       ADDING PATHs
+        -------------------- */
     //Works like fences
     let pathTiles = [];//List of created pathTiles
     const pathTilesModel = await loadModel('src/objects/models/path.gltf');
@@ -111,11 +139,6 @@ export async function addAssetsOnScene(scene){
 
         pathLeft.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(90));//Correctly rotated for that face
         pathRight.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(90));
-
-        alignGround(ground, pathUp);
-        alignGround(ground, pathLeft);
-        alignGround(ground, pathDown);
-        alignGround(ground, pathRight);
 
         scene.add(pathUp);
         scene.add(pathLeft);
@@ -196,10 +219,10 @@ export async function addAssetsOnScene(scene){
     scene.add( player.scene );
 	
     return {
-        ground: ground,
-        fenceScenes: fences,
+        //ground: ground,
+        //fenceScenes: fences,
         player: player,
-        pathTiles: pathTiles,
+        //pathTiles: pathTiles,
         nameplateModel: nameplateModel
     };
 }
