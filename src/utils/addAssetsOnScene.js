@@ -226,6 +226,24 @@ export async function addAssetsOnScene(scene){
     alignGround(ground, player.scene);
     player.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));//Must be standing up
     scene.add( player.scene );
+
+
+    //test
+    const water = await loadModel('src/objects/models/water.gltf');
+    water.scene.scale.set(0.2,0.2,0.2);
+    water.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
+    water.scene.position.x = 5;
+    water.scene.position.y = -5;
+    alignGround(ground, water.scene);
+    scene.add(water.scene);
+
+    const color = 0xFFFFFF;
+    const intensity = 1;
+    const light = new THREE.DirectionalLight(color, intensity);
+    light.position.set(5, 10, -5);
+    light.target.position.set(5, 0, -5);
+    scene.add(light);
+    scene.add(light.target);
 	
     return {
         ground: ground,
