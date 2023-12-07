@@ -81,7 +81,7 @@ export async function addAssetsOnScene(scene){
 
     //Small garden
     //Everything here was carefully adjusted for the given size, modifying this would require more adjustements on fences position
-    const topLeftCorner = {x:4.56, y:-18}
+    const smallGardenTopLeftCorner = {x:4.56, y:-18}
     const smallGardenHeight = 11*fenceWidth;
     const smallGardenWidth = 7*fenceWidth;
 
@@ -92,10 +92,10 @@ export async function addAssetsOnScene(scene){
         fence1.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(90));//Correctly rotated for that face
         fence2.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(90));
 
-        fence1.position.x = topLeftCorner.x + i;
-        fence1.position.y = topLeftCorner.y;
-        fence2.position.x = topLeftCorner.x - i + smallGardenHeight;
-        fence2.position.y = topLeftCorner.y + smallGardenWidth;
+        fence1.position.x = smallGardenTopLeftCorner.x + i;
+        fence1.position.y = smallGardenTopLeftCorner.y;
+        fence2.position.x = smallGardenTopLeftCorner.x - i + smallGardenHeight;
+        fence2.position.y = smallGardenTopLeftCorner.y + smallGardenWidth;
 
         scene.add(fence1);
         fences.push(fence1);
@@ -109,10 +109,10 @@ export async function addAssetsOnScene(scene){
         const fence1 = fenceModel.scene.clone();
         const fence2 = fenceModel.scene.clone();
 
-        fence1.position.y = topLeftCorner.y + i;
-        fence1.position.x = topLeftCorner.x - fenceWidth + 0.2;
-        fence2.position.y = topLeftCorner.y - i + smallGardenWidth - fenceWidth;
-        fence2.position.x = topLeftCorner.x + smallGardenHeight;
+        fence1.position.y = smallGardenTopLeftCorner.y + i;
+        fence1.position.x = smallGardenTopLeftCorner.x - fenceWidth + 0.2;
+        fence2.position.y = smallGardenTopLeftCorner.y - i + smallGardenWidth - fenceWidth;
+        fence2.position.x = smallGardenTopLeftCorner.x + smallGardenHeight;
 
         if(i+fenceWidth<stopValue){
             scene.add(fence1);
@@ -198,6 +198,49 @@ export async function addAssetsOnScene(scene){
     });
 
     /* --------------------
+    ADDING LAKE AND STONE WALLS
+    -------------------- */
+
+    const lakeTopLeftCorner = {x: 9, y:-12.5};
+    const lakeWidth = 4;//Number of water tiles
+    const lakeHeight = 2;
+    const waterModel = await loadModel('src/objects/models/water.gltf');
+    waterModel.scene.scale.set(0.2,0.2,0.2);
+    waterModel.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
+    alignGround(ground, waterModel.scene);
+    waterModel.scene.position.z -= 0.2;
+
+    const waterHitbox = new THREE.Box3().setFromObject(waterModel.scene);
+    const waterWidth = waterHitbox.max.y - waterHitbox.min.y;
+
+    for(let i = 0; i < lakeWidth; i++){//Placing water
+        for(let j = 0; j < lakeHeight; j++){
+            const lakeClone = waterModel.scene.clone();
+            lakeClone.position.x = lakeTopLeftCorner.x + i * (waterWidth - 0.1 );
+            lakeClone.position.y = lakeTopLeftCorner.y - j * (waterWidth - 0.1 );
+            scene.add(lakeClone);
+        }
+    }
+
+    //Walls
+    const stoneWallModel = await loadModel('src/objects/models/gravel.gltf');
+    stoneWallModel.scene.scale.set(0.5,0.5,0.5);
+    stoneWallModel.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
+    alignGround(ground, stoneWallModel.scene);
+
+    const stoneWallHitbox = new THREE.Box3().setFromObject(stoneWallModel.scene);
+    const stoneWallWidth = stoneWallHitbox.max.y - stoneWallHitbox.min.y;
+  
+    for(let i = lakeTopLeftCorner.x; i<lakeTopLeftCorner.x + lakeWidth*waterWidth; i=i+stoneWallWidth){
+        //X axis
+        const stoneWallClone = stoneWallModel.scene.clone();
+        stoneWallClone.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(90));
+        stoneWallClone.position.x = i;
+        stoneWallClone.position.y = lakeTopLeftCorner.y;
+        scene.add(stoneWallClone);
+    }
+
+    /* --------------------
     ADDING NAME & JOB
     -------------------- */
     let nameplateModel;
@@ -227,23 +270,13 @@ export async function addAssetsOnScene(scene){
     player.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));//Must be standing up
     scene.add( player.scene );
 
-
-    //test
-    const water = await loadModel('src/objects/models/water.gltf');
-    water.scene.scale.set(0.2,0.2,0.2);
-    water.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
-    water.scene.position.x = 5;
-    water.scene.position.y = -5;
-    alignGround(ground, water.scene);
-    scene.add(water.scene);
-
-    const color = 0xFFFFFF;
+    /*const color = 0xFFFFFF;
     const intensity = 1;
     const light = new THREE.DirectionalLight(color, intensity);
     light.position.set(5, 10, -5);
     light.target.position.set(5, 0, -5);
     scene.add(light);
-    scene.add(light.target);
+    scene.add(light.target);*/
 	
     return {
         ground: ground,
