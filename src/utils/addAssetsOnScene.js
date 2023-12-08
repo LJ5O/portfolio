@@ -160,6 +160,16 @@ export async function addAssetsOnScene(scene){
         pathTiles.push(pathRight);
     }
 
+    //Small garden paths :
+    const gardenStartOfRoad = {x:3.8, y:-8.7};
+    for(let i = 0; i<3; i++){
+        const pathClone = pathTilesModel.scene.clone();
+        pathClone.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(45));
+        pathClone.position.y = gardenStartOfRoad.y - i*(pathTileWidth - (pathTileWidth*Math.sqrt(2) - pathTileWidth)/2 - 0.2);//As we rely on diagonal size instead of width, we calculate the size of the diagonal, minus the width to get
+        pathClone.position.x = gardenStartOfRoad.x + i*(pathTileWidth - (pathTileWidth*Math.sqrt(2) - pathTileWidth)/2 - 0.2);//the exceding size of the diagonal. The center is in the middle, so we divise by 2. Finally, -0.2 is removed, so it fit perfectly
+
+        scene.add(pathClone);
+    }
     /* --------------------
     ADDING TREES
     -------------------- */
@@ -201,44 +211,7 @@ export async function addAssetsOnScene(scene){
     ADDING LAKE AND STONE WALLS
     -------------------- */
 
-    const lakeTopLeftCorner = {x: 9, y:-12.5};
-    const lakeWidth = 4;//Number of water tiles
-    const lakeHeight = 2;
-    const waterModel = await loadModel('src/objects/models/water.gltf');
-    waterModel.scene.scale.set(0.2,0.2,0.2);
-    waterModel.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
-    alignGround(ground, waterModel.scene);
-    waterModel.scene.position.z -= 0.2;
 
-    const waterHitbox = new THREE.Box3().setFromObject(waterModel.scene);
-    const waterWidth = waterHitbox.max.y - waterHitbox.min.y;
-
-    for(let i = 0; i < lakeWidth; i++){//Placing water
-        for(let j = 0; j < lakeHeight; j++){
-            const lakeClone = waterModel.scene.clone();
-            lakeClone.position.x = lakeTopLeftCorner.x + i * (waterWidth - 0.1 );
-            lakeClone.position.y = lakeTopLeftCorner.y - j * (waterWidth - 0.1 );
-            scene.add(lakeClone);
-        }
-    }
-
-    //Walls
-    const stoneWallModel = await loadModel('src/objects/models/gravel.gltf');
-    stoneWallModel.scene.scale.set(0.5,0.5,0.5);
-    stoneWallModel.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
-    alignGround(ground, stoneWallModel.scene);
-
-    const stoneWallHitbox = new THREE.Box3().setFromObject(stoneWallModel.scene);
-    const stoneWallWidth = stoneWallHitbox.max.y - stoneWallHitbox.min.y;
-  
-    for(let i = lakeTopLeftCorner.x; i<lakeTopLeftCorner.x + lakeWidth*waterWidth; i=i+stoneWallWidth){
-        //X axis
-        const stoneWallClone = stoneWallModel.scene.clone();
-        stoneWallClone.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(90));
-        stoneWallClone.position.x = i;
-        stoneWallClone.position.y = lakeTopLeftCorner.y;
-        scene.add(stoneWallClone);
-    }
 
     /* --------------------
     ADDING NAME & JOB
