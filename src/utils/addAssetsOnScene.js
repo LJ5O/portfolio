@@ -132,8 +132,8 @@ export async function addAssetsOnScene(scene){
     pathTilesModel.scene.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), MathUtils.degToRad(90));//Must be on the ground
     alignGround(ground, pathTilesModel.scene);
 
-    const pathTileHitbox = new THREE.Box3().setFromObject(pathTilesModel.scene);
-    const pathTileWidth = pathTileHitbox.max.y - pathTileHitbox.min.y;
+    let pathTileHitbox = new THREE.Box3().setFromObject(pathTilesModel.scene);
+    let pathTileWidth = pathTileHitbox.max.y - pathTileHitbox.min.y;
 
     for(let i = 0; i<(groundXSize-pathTileWidth)/2; i=i+pathTileWidth){//Loop to add all path tiles, except the last
         const pathUp = pathTilesModel.scene.clone();//Vertical
@@ -162,12 +162,27 @@ export async function addAssetsOnScene(scene){
 
     //Small garden paths :
     const gardenStartOfRoad = {x:3.8, y:-8.7};
-    for(let i = 0; i<3; i++){
+    pathTilesModel.scene.scale.set(0.1,0.01,0.1);//We finished to add big path tiles, we can now reduce the size for the garden
+
+    pathTileHitbox = new THREE.Box3().setFromObject(pathTilesModel.scene);
+    pathTileWidth = pathTileHitbox.max.y - pathTileHitbox.min.y;
+    let lastDiagonalTile;//Will contain the position of the last placed diagonal tile, and the start of the horizontal and vertical paths
+
+    for(let i = 0; i<5; i++){//Diagonal entrance
         const pathClone = pathTilesModel.scene.clone();
         pathClone.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(45));
-        pathClone.position.y = gardenStartOfRoad.y - i*(pathTileWidth - (pathTileWidth*Math.sqrt(2) - pathTileWidth)/2 - 0.2);//As we rely on diagonal size instead of width, we calculate the size of the diagonal, minus the width to get
-        pathClone.position.x = gardenStartOfRoad.x + i*(pathTileWidth - (pathTileWidth*Math.sqrt(2) - pathTileWidth)/2 - 0.2);//the exceding size of the diagonal. The center is in the middle, so we divise by 2. Finally, -0.2 is removed, so it fit perfectly
+        pathClone.position.y = gardenStartOfRoad.y - i*(pathTileWidth - (pathTileWidth*Math.sqrt(2) - pathTileWidth)/2 - 0.1);//As we rely on diagonal size instead of width, we calculate the size of the diagonal, minus the width to get
+        pathClone.position.x = gardenStartOfRoad.x + i*(pathTileWidth - (pathTileWidth*Math.sqrt(2) - pathTileWidth)/2 - 0.1);//the exceding size of the diagonal. The center is in the middle, so we divise by 2. Finally, -0.1 is removed, so it fit perfectly
+        scene.add(pathClone);
 
+        if(i==4)lastDiagonalTile = pathClone.position;
+    }
+
+    for(let i = 0; i<12; i++){//Horizontal path
+        const pathClone = pathTilesModel.scene.clone();
+        pathClone.position.z = lastDiagonalTile.z + 0.001;//So we can avoid overlapping tiles, which can cause visual glitches
+        pathClone.position.y = lastDiagonalTile.y;
+        pathClone.position.x = lastDiagonalTile.x + i * pathTileWidth;
         scene.add(pathClone);
     }
     /* --------------------
@@ -208,10 +223,9 @@ export async function addAssetsOnScene(scene){
     });
 
     /* --------------------
-    ADDING LAKE AND STONE WALLS
+    ADDING GARDEN's STATUES
     -------------------- */
-
-
+    
 
     /* --------------------
     ADDING NAME & JOB
