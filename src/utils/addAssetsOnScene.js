@@ -226,7 +226,23 @@ export async function addAssetsOnScene(scene){
     ADDING GARDEN's STATUES
     -------------------- */
     
+    const worldStatue = await loadModel('src/objects/models/statueWorld.gltf');
+    worldStatue.scene.scale.set(0.09,0.09,0.09);
+    worldStatue.scene.position.x = 9.3;
+    worldStatue.scene.position.y = -13.6;
+    worldStatue.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));//Must be standing up
+    worldStatue.scene.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(-90));//Must be standing up
+    alignGround(ground, worldStatue.scene);
+    scene.add( worldStatue.scene );
 
+    const printerStatue = await loadModel('src/objects/models/statue3DPrinter.gltf');
+    printerStatue.scene.scale.set(0.085,0.085,0.085);
+    printerStatue.scene.position.x = 14.3;
+    printerStatue.scene.position.y = -13.65;
+    printerStatue.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));//Must be standing up
+    printerStatue.scene.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(-90));//Must be standing up
+    alignGround(ground, printerStatue.scene);
+    scene.add( printerStatue.scene );
     /* --------------------
     ADDING NAME & JOB
     -------------------- */
