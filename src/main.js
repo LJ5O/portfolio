@@ -36,6 +36,8 @@ document.addEventListener('keyup', PlayerMovement.handleKeyUp);
 //https://threejs.org/docs/#api/en/animation/AnimationAction
 Animations.addAnimationMixerOnMesh(assets.player, ["Walk"]);
 Animations.addAnimationMixerOnMesh(assets.nameplateModel, ["Float"]);assets.nameplateModel.animationActions.Float.play();
+Animations.addAnimationMixerOnMesh(assets.worldStatue, ["Animation"]);assets.worldStatue.animationActions.Animation.play();
+Animations.addAnimationMixerOnMesh(assets.printerStatue, ["Printing"]);assets.printerStatue.animationActions.Printing.play();
 
 
 function animate() {

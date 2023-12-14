@@ -236,9 +236,10 @@ export async function addAssetsOnScene(scene){
     scene.add( worldStatue.scene );
 
     const printerStatue = await loadModel('src/objects/models/statue3DPrinter.gltf');
-    printerStatue.scene.scale.set(0.085,0.085,0.085);
+    //printerStatue.scene.scale.set(0.085,0.085,0.085);
+    printerStatue.scene.scale.set(0.09,0.09,0.09);
     printerStatue.scene.position.x = 14.3;
-    printerStatue.scene.position.y = -13.65;
+    printerStatue.scene.position.y = -13.6;
     printerStatue.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));//Must be standing up
     printerStatue.scene.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(-90));//Must be standing up
     alignGround(ground, printerStatue.scene);
@@ -286,6 +287,8 @@ export async function addAssetsOnScene(scene){
         fenceScenes: fences,
         player: player,
         pathTiles: pathTiles,
-        nameplateModel: nameplateModel
+        nameplateModel: nameplateModel,
+        worldStatue: worldStatue,
+        printerStatue: printerStatue
     };
 }
