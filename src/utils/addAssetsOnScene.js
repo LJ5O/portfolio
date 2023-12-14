@@ -178,11 +178,31 @@ export async function addAssetsOnScene(scene){
         if(i==4)lastDiagonalTile = pathClone.position;
     }
 
-    for(let i = 0; i<12; i++){//Horizontal path
-        const pathClone = pathTilesModel.scene.clone();
+    for(let i = 0; i<11; i++){//Horizontal path
+        let pathClone = pathTilesModel.scene.clone();//Upper X path
         pathClone.position.z = lastDiagonalTile.z + 0.001;//So we can avoid overlapping tiles, which can cause visual glitches
         pathClone.position.y = lastDiagonalTile.y;
         pathClone.position.x = lastDiagonalTile.x + i * pathTileWidth;
+        scene.add(pathClone);
+
+        pathClone = pathTilesModel.scene.clone();//The path below it
+        pathClone.position.z = lastDiagonalTile.z + 0.001;
+        pathClone.position.y = lastDiagonalTile.y - 4 * pathTileWidth;
+        pathClone.position.x = lastDiagonalTile.x + i * pathTileWidth;
+        scene.add(pathClone);
+    }
+
+    for(let i = 0; i<5; i++){//Vertical path
+        let pathClone = pathTilesModel.scene.clone();//Left Y path
+        pathClone.position.z = lastDiagonalTile.z + 0.002;//So we can avoid overlapping tiles, which can cause visual glitches
+        pathClone.position.y = lastDiagonalTile.y - i * pathTileWidth;
+        pathClone.position.x = lastDiagonalTile.x;
+        scene.add(pathClone);
+
+        pathClone = pathTilesModel.scene.clone();//Right Y path
+        pathClone.position.z = lastDiagonalTile.z + 0.002;
+        pathClone.position.y = lastDiagonalTile.y - i * pathTileWidth;
+        pathClone.position.x = lastDiagonalTile.x + 11 * pathTileWidth;
         scene.add(pathClone);
     }
     /* --------------------
@@ -225,25 +245,35 @@ export async function addAssetsOnScene(scene){
     /* --------------------
     ADDING GARDEN's STATUES
     -------------------- */
-    
     const worldStatue = await loadModel('src/objects/models/statueWorld.gltf');
     worldStatue.scene.scale.set(0.09,0.09,0.09);
-    worldStatue.scene.position.x = 9.3;
+    worldStatue.scene.position.x = 9.8;
     worldStatue.scene.position.y = -13.6;
     worldStatue.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));//Must be standing up
-    worldStatue.scene.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(-90));//Must be standing up
+    worldStatue.scene.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(-90));
     alignGround(ground, worldStatue.scene);
     scene.add( worldStatue.scene );
 
     const printerStatue = await loadModel('src/objects/models/statue3DPrinter.gltf');
-    //printerStatue.scene.scale.set(0.085,0.085,0.085);
     printerStatue.scene.scale.set(0.09,0.09,0.09);
     printerStatue.scene.position.x = 14.3;
     printerStatue.scene.position.y = -13.6;
     printerStatue.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));//Must be standing up
-    printerStatue.scene.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(-90));//Must be standing up
+    printerStatue.scene.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(-90));
     alignGround(ground, printerStatue.scene);
     scene.add( printerStatue.scene );
+
+    /* --------------------
+    ADDING GARDEN's TABLE AND PROPS ON IT
+    -------------------- */
+    const table = await loadModel('src/objects/models/table.gltf');
+    table.scene.scale.set(0.09,0.09,0.09);
+    table.scene.position.x = 16;
+    table.scene.position.y = -17.35;
+    table.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));//Must be standing up
+    alignGround(ground, table.scene);
+    scene.add( table.scene );
+
     /* --------------------
     ADDING NAME & JOB
     -------------------- */
