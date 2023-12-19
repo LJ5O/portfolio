@@ -231,8 +231,7 @@ export async function addAssetsOnScene(scene){
         , {x:-21.78,y:-17.76}, {x:-18.48,y:-17.6}, {x:-16.17,y:-18.5}, {x:-13.9,y:-16.8}, {x:-10.57,y:-16.3}, {x:-11.6,y:-18.36}, {x:-13.4,y:-20}, {x:-8.3,y:-18}, {x:-5.45,y:-16.6}
         , {x:-3.67,y:-18}, {x:-23.1,y:-20.2}, {x:-20.5,y:-21}, {x:-18.3,y:-20.1}, {x:-16,y:-21.5}, {x:-10.78,y:-21}, {x:-6.3,y:-20.1}, {x:-4,y:-20.8}, {x:-1.8,y:-19.6}
         , {x:-21.9,y:-22.75}, {x:-18.6,y:-22.6}, {x:-14.8,y:-23.3}, {x:-13,y:-22}, {x:-23,y:-14.4}, {x:-11.1,y:-23.1}, {x:-23,y:-14.4}, {x:-8.5,y:-21.8}, {x:-23,y:-14.4}, {x:-7,y:-22.8}
-        , {x:-4.1,y:-23.3}, {x:-2.2,y:-22.93}];
-        
+        , {x:-4.1,y:-23.3}, {x:-2.2,y:-22.93}];  
 
     forestPinesLocations.forEach(newPos => {
         const pineClone = treePineModel.scene.clone();
@@ -240,6 +239,17 @@ export async function addAssetsOnScene(scene){
         pineClone.position.y = newPos.y;
         pineClone.rotation.y = Math.random() * Math.PI * 2;
         scene.add(pineClone);
+    });
+
+    const sakuraLocations = [{x:6.49, y:-9.89}, {x:9.1, y:-10.47}, {x:10.42, y:-9.44}, {x:12.6, y:-10.5}, {x:14.01, y:-9.89}, {x:15.6, y:-9.71}, {x:17.3, y:-10.4}, {x:18.81, y:-9.62},
+        {x:11.98, y:-9.59}, {x:8.06, y:-9.82}, {x:18.72, y:-11.94}, {x:11.1, y:-10.6}, {x:19.23, y:-13.66}, {x:18.55, y:-15.21}]
+
+    sakuraLocations.forEach(newPos => {
+        const sakuraClone = treeSakuraModel.scene.clone();
+        sakuraClone.position.x = newPos.x;
+        sakuraClone.position.y = newPos.y;
+        sakuraClone.rotation.y = Math.random() * Math.PI * 2;
+        scene.add(sakuraClone);
     });
 
     /* --------------------
@@ -274,6 +284,32 @@ export async function addAssetsOnScene(scene){
     alignGround(ground, table.scene);
     scene.add( table.scene );
 
+    const gameboy = await loadModel('src/objects/models/gameboy.gltf');
+    gameboy.scene.scale.set(0.01,0.01,0.01);
+    gameboy.scene.position.x = 16.62;
+    gameboy.scene.position.y = -17.2;
+    gameboy.scene.rotateOnWorldAxis(new THREE.Vector3(0,1,0), MathUtils.degToRad(-90));
+    gameboy.scene.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(-35));
+    alignGround(table.scene, gameboy.scene);
+    scene.add( gameboy.scene );
+
+    const computer = await loadModel('src/objects/models/computer.gltf');
+    computer.scene.scale.set(0.02,0.02,0.02);
+    computer.scene.position.x = 16.2;
+    computer.scene.position.y = -17.1;
+    computer.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
+    computer.scene.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(-90));
+    alignGround(table.scene, computer.scene);
+    scene.add( computer.scene );
+
+    const gamepad = await loadModel('src/objects/models/gamepad.gltf');
+    gamepad.scene.scale.set(0.01,0.01,0.01);
+    gamepad.scene.position.x = 15.7;
+    gamepad.scene.position.y = -17.1;
+    gamepad.scene.rotateOnWorldAxis(new THREE.Vector3(0,1,0), MathUtils.degToRad(-90));
+    gamepad.scene.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(20));
+    alignGround(table.scene, gamepad.scene);
+    scene.add( gamepad.scene );
     /* --------------------
     ADDING NAME & JOB
     -------------------- */
