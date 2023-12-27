@@ -8,6 +8,7 @@ export function getCamera(){
     camera.position.x = 0;// <----->
     camera.position.y = -4;// ^^ / vv
     camera.position.z = 4;// ^-----v
+    //camera.position.set(10,0.36 -4,0 +4);
     camera.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), MathUtils.degToRad(40));
 
     return camera;

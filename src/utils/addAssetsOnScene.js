@@ -312,6 +312,7 @@ export async function addAssetsOnScene(scene){
     gamepad.scene.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(20));
     alignGround(table.scene, gamepad.scene);
     scene.add( gamepad.scene );
+
     /* --------------------
     ADDING NAME & JOB
     -------------------- */
@@ -329,15 +330,44 @@ export async function addAssetsOnScene(scene){
     nameplateModel.scene.position.y = 2;
     alignGround(ground, nameplateModel.scene);
     nameplateModel.scene.position.z += 0.2;
-
     scene.add(nameplateModel.scene);
 
+    /* --------------------
+    ADDING SIGNS
+    -------------------- */
+    const sign = await loadModel('src/objects/models/sign.gltf');
+    sign.scene.scale.set(0.08,0.08,0.08);
+    sign.scene.position.x = 10;
+    sign.scene.position.y = 1.36;
+    sign.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
+    sign.scene.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(-90));
+    alignGround(ground, sign.scene);
+    scene.add( sign.scene );
+
+    const geometry = new THREE.PlaneGeometry(2.95, 1.55);
+    const material = new THREE.MeshBasicMaterial({ color: 0x000000 });
+    const plane = new THREE.Mesh(geometry, material);
+    plane.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
+    plane.position.set(10.06, 1.347, 1.65);
+    scene.add(plane);
+
+
+    for(let i=1; i<3; i++){
+        const signCopy = sign.scene.clone();
+        signCopy.position.x += i*5;
+        scene.add( signCopy );
+
+        const planeClone = plane.clone();
+        planeClone.position.x += i*5;
+        scene.add( planeClone );
+    }
 
     /* --------------------
     ADDING PLAYER
     -------------------- */
     const player = await loadModel('src/objects/models/player.gltf');//Loading player
     player.scene.scale.set(0.2,0.2,0.2);
+    //player.scene.position.set(10,0.36,0);
     alignGround(ground, player.scene);
     player.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));//Must be standing up
     scene.add( player.scene );
