@@ -209,10 +209,10 @@ export async function addAssetsOnScene(scene){
     /* --------------------
     ADDING TREES
     -------------------- */
-    const treeOakModel = await loadModel('src/objects/models/tree1.gltf');
-    const treeAppleOakModel = await loadModel('src/objects/models/tree2.gltf');
-    const treeSakuraModel = await loadModel('src/objects/models/tree3.gltf');
-    const treePineModel = await loadModel('src/objects/models/tree4.gltf');
+    const treeOakModel = await loadModel('src/objects/models/tree/tree1.gltf');
+    const treeAppleOakModel = await loadModel('src/objects/models/tree/tree2.gltf');
+    const treeSakuraModel = await loadModel('src/objects/models/tree/tree3.gltf');
+    const treePineModel = await loadModel('src/objects/models/tree/tree4.gltf');
 
     function prepareTree(treeModel){
         //Small function to apply every neccessary transformation on trees before placing them
@@ -319,11 +319,11 @@ export async function addAssetsOnScene(scene){
     -------------------- */
     let nameplateModel;
     if(true){//Will be used later for localization
-        nameplateModel = await loadModel('src/objects/models/NameFR.gltf');
+        nameplateModel = await loadModel('src/objects/models/name/NameFR.gltf');
     }else if(false){
-        nameplateModel = await loadModel('src/objects/models/NameJP.gltf');
+        nameplateModel = await loadModel('src/objects/models/name/NameJP.gltf');
     }else{
-        nameplateModel = await loadModel('src/objects/models/NameEN.gltf');
+        nameplateModel = await loadModel('src/objects/models/name/NameEN.gltf');
     }
     nameplateModel.scene.scale.set(0.6,0.6,0.6);
     nameplateModel.scene.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), MathUtils.degToRad(60));
