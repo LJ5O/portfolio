@@ -357,6 +357,58 @@ export async function addAssetsOnScene(scene){
         signPlane.position.set(10.06 + i*5, 1.347, 1.65);//Determined by hand
         scene.add(signPlane);
     }
+    
+    /* --------------------
+    ADDING GRASS
+    -------------------- */
+    const grass1 = await loadModel('src/objects/models/grass/grass1.gltf');
+    const grass2 = await loadModel('src/objects/models/grass/grass2.gltf');
+    const grass3 = await loadModel('src/objects/models/grass/grass3.gltf');
+    const grass4 = await loadModel('src/objects/models/grass/grass4.gltf');
+    const grass5 = await loadModel('src/objects/models/grass/grass5.gltf');
+    const grassModels = [grass1,grass2,grass3,grass4,grass5];//https://threejs.org/docs/#api/en/objects/InstancedMesh
+
+    grassModels.forEach(item => {
+        //Prepare models before placing them
+        item.scene.scale.set(0.1, 0.1, 0.1);
+        item.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
+        alignGround(ground, item.scene);
+    });
+
+    function getRndInteger(min, max) {
+        return Math.floor(Math.random() * (max - min) ) + min;
+      }
+
+      for (let i = 0; i < 280; i++) {
+        let choosenGrassModel;
+        let collision;
+    
+        do {
+            choosenGrassModel = grassModels[getRndInteger(0, grassModels.length)].scene.clone();
+    
+            // Random position
+            choosenGrassModel.position.x = getRndInteger(groundHitBox.min.x, groundHitBox.max.x);
+            choosenGrassModel.position.y = getRndInteger(groundHitBox.min.y, groundHitBox.max.y);
+    
+            // Checking collisions
+            const grassHitbox = new THREE.Box3().setFromObject(choosenGrassModel);
+            collision = false;
+    
+            // Checking with other objects
+            /*scene.children.forEach(object => {
+                if (object !== ground && object !== choosenGrassModel) {
+                    const distance = choosenGrassModel.position.distanceTo(object.position);
+    
+                    if (distance < 0.5) {
+                        collision = true;
+                    }
+                }
+            });*/
+        } while (collision);
+    
+        // Adding to scene
+        scene.add(choosenGrassModel);
+    }
 
     /* --------------------
     ADDING PLAYER
