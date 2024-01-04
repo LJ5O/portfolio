@@ -51,4 +51,5 @@ function animate() {
 	renderer.render( scene, camera );//Calculating and redering new frame
 
 }
+console.log("Ready to render scene, placed objects : "+scene.children.length);
 animate();

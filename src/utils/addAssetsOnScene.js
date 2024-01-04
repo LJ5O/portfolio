@@ -379,7 +379,7 @@ export async function addAssetsOnScene(scene){
         return Math.floor(Math.random() * (max - min) ) + min;
       }
 
-      for (let i = 0; i < 280; i++) {
+      for (let i = 0; i < 140; i++) {
         let choosenGrassModel;
         let collision;
     
@@ -393,17 +393,17 @@ export async function addAssetsOnScene(scene){
             // Checking collisions
             const grassHitbox = new THREE.Box3().setFromObject(choosenGrassModel);
             collision = false;
+
+            for(let j=0; j<scene.children.length; j++){
+                if (scene.children[j] !== ground && scene.children[j] !== choosenGrassModel) {
+                    const distance = choosenGrassModel.position.distanceTo(scene.children[j].position);
     
-            // Checking with other objects
-            /*scene.children.forEach(object => {
-                if (object !== ground && object !== choosenGrassModel) {
-                    const distance = choosenGrassModel.position.distanceTo(object.position);
-    
-                    if (distance < 0.5) {
-                        collision = true;
+                    if (distance < 0.8) {
+                        collision = true;console.log('ok');
+                        break;
                     }
                 }
-            });*/
+            }
         } while (collision);
     
         // Adding to scene
