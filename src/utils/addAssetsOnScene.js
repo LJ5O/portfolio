@@ -343,8 +343,9 @@ export async function addAssetsOnScene(scene){
     alignGround(ground, sign.scene);
 
     const SignPlanegeometry = new THREE.PlaneGeometry(2.95, 1.55);
-    const signPictures = ['src/objects/textures/epid.png', 'src/objects/textures/iutCalais.png']
 
+    /* SCHOOLS */
+    let signPictures = ['src/objects/textures/epid.png', 'src/objects/textures/iutCalais.png']
     for(let i=0; i<2; i++){
         const signCopy = sign.scene.clone();
         signCopy.position.x = 10 + i*5;
@@ -354,7 +355,22 @@ export async function addAssetsOnScene(scene){
         const signPlaneMaterial = new THREE.MeshBasicMaterial({ map:textureLoader.load(signPictures[i]) });
         const signPlane = new THREE.Mesh(SignPlanegeometry, signPlaneMaterial);
         signPlane.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
-        signPlane.position.set(10.06 + i*5, 1.347, 1.65);//Determined by hand
+        signPlane.position.set( signCopy.position.x + 0.06, 1.347, 1.65);//Determined by hand
+        scene.add(signPlane);
+    }
+
+    /* PROFESSIONAL EXPERIENCES */
+    signPictures = ['src/objects/textures/hachinohe.png'];
+    for(let i=0; i<1; i++){
+        const signCopy = sign.scene.clone();
+        signCopy.position.x = -4 - i*5;
+        signCopy.position.y = 1.36;
+        scene.add( signCopy );
+
+        const signPlaneMaterial = new THREE.MeshBasicMaterial({ map:textureLoader.load(signPictures[i]) });
+        const signPlane = new THREE.Mesh(SignPlanegeometry, signPlaneMaterial);
+        signPlane.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
+        signPlane.position.set( signCopy.position.x + 0.06, 1.347, 1.65);//Determined by hand
         scene.add(signPlane);
     }
     
