@@ -382,16 +382,17 @@ export async function addAssetsOnScene(scene){
       for (let i = 0; i < 140; i++) {
         let choosenGrassModel;
         let collision;
+
+        choosenGrassModel = grassModels[getRndInteger(0, grassModels.length)].scene.clone();
+        choosenGrassModel.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad( getRndInteger(0,4) * 90));//Random rotation on Z axis
     
         do {
-            choosenGrassModel = grassModels[getRndInteger(0, grassModels.length)].scene.clone();
     
             // Random position
             choosenGrassModel.position.x = getRndInteger(groundHitBox.min.x, groundHitBox.max.x);
             choosenGrassModel.position.y = getRndInteger(groundHitBox.min.y, groundHitBox.max.y);
     
             // Checking collisions
-            const grassHitbox = new THREE.Box3().setFromObject(choosenGrassModel);
             collision = false;
 
             for(let j=0; j<scene.children.length; j++){
@@ -399,7 +400,7 @@ export async function addAssetsOnScene(scene){
                     const distance = choosenGrassModel.position.distanceTo(scene.children[j].position);
     
                     if (distance < 0.8) {
-                        collision = true;console.log('ok');
+                        collision = true;
                         break;
                     }
                 }
