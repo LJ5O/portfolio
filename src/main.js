@@ -3,6 +3,20 @@ import { getCamera } from './cameras/PerspectiveCamera.js';
 import {addAssetsOnScene} from './utils/addAssetsOnScene.js';
 import * as PlayerMovement from './utils/playerMovement.js';
 import * as Animations from './utils/animateMesh.js';
+
+/*TODO*/
+import $ from 'jquery'
+
+function showNotification(HTMLText, color){
+  $("#notification_bar p").html(HTMLText);
+  $("#notification_bar").css( 'opacity', 0.9 ).animate({
+    width:320
+  }, 500);
+}
+
+showNotification("oui")
+/*TODO*/
+
 let Clock = new THREE.Clock();
 THREE.Cache.enabled = true;//So we can request several time the same file without worrying : https://threejs.org/docs/#api/en/loaders/FileLoader
 

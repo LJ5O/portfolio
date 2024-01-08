@@ -5,9 +5,35 @@
 		<title>My first three.js app</title>
 		<style>
 			body { margin: 0; }
+
+			#notification_bar {
+				position: absolute;
+				top:0;
+				right: 0;
+
+				height: 80px;
+				width: 0;
+				/*width: 320px; 320 is the expended value, when showed by Jquery*/
+				background-color: #1C232A;
+				opacity: 0; /* Set to 0.9 when showed */
+				z-index: 100;
+				border-left: 24px solid #2E86AB;
+			}
+
+			#notification_bar p{
+				margin: 6px;
+				color: #EAEAEA;
+				font-size: 1em;
+				font-family: Arial, Helvetica, sans-serif;
+			}
+			
 		</style>
 	</head>
 	<body>
+		<div id="notification_bar">
+			<p><!-- Text added here by JS --></p>
+		</div>
 		<script type="module" src="/src/main.js"></script>
+		
 	</body>
 </html>

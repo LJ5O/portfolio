@@ -375,6 +375,17 @@ export async function addAssetsOnScene(scene){
     }
     
     /* --------------------
+    ADDING LINK PLATES
+    -------------------- */
+
+    const linkPlate = await loadModel('src/objects/models/linkPlate.gltf');
+    linkPlate.scene.scale.set(0.4,0.05,0.4);
+    linkPlate.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));//Must be standing up
+    alignGround(ground, linkPlate.scene);
+    linkPlate.scene.position.y = 2;
+    scene.add( linkPlate.scene );
+
+    /* --------------------
     ADDING GRASS
     -------------------- */
     const grass1 = await loadModel('src/objects/models/grass/grass1.gltf');
@@ -382,7 +393,7 @@ export async function addAssetsOnScene(scene){
     const grass3 = await loadModel('src/objects/models/grass/grass3.gltf');
     const grass4 = await loadModel('src/objects/models/grass/grass4.gltf');
     const grass5 = await loadModel('src/objects/models/grass/grass5.gltf');
-    const grassModels = [grass1,grass2,grass3,grass4,grass5];//https://threejs.org/docs/#api/en/objects/InstancedMesh
+    const grassModels = [grass1,grass2,grass3,grass4,grass5];// Planned for later : https://threejs.org/docs/#api/en/objects/InstancedMesh
 
     grassModels.forEach(item => {
         //Prepare models before placing them
