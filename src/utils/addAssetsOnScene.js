@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import * as MathUtils from 'three/src/math/MathUtils.js';
 import { createGround } from '../objects/ground.js';
 import {loadModel} from './import.js';
+import * as Notifications from '../utils/notification.js';
 const textureLoader = new THREE.TextureLoader();
 
 
@@ -387,7 +388,8 @@ export async function addAssetsOnScene(scene){
     linkPlate.scene.position.y = 2;
     linkPlate.scene.position.z = 1;
     scene.add( linkPlate.scene );
-    linkPlate.onEnterHitbox = ()=>{console.log('"Hello World !"')};
+    linkPlate.onEnterHitbox = ()=>{Notifications.showNotification("Hello World !")};
+    linkPlate.onLeaveHitbox = ()=>{Notifications.hideNotification()};
     linkPlates.push(linkPlate);
 
     /* --------------------
@@ -469,6 +471,6 @@ export async function addAssetsOnScene(scene){
         nameplateModel: nameplateModel,
         worldStatue: worldStatue,
         printerStatue: printerStatue,
-        linkPlates:linkPlates
+        linkPlates: linkPlates
     };
 }

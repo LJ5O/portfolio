@@ -6,3 +6,9 @@ export function showNotification(HTMLText){
     width:320
   }, 500);
 }
+
+export function hideNotification(){
+  $("#notification_bar").animate({
+    width:0
+  }, 500, function(){ $(this).css( 'opacity', 0 ) });
+}
