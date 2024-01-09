@@ -3,24 +3,12 @@ import { getCamera } from './cameras/PerspectiveCamera.js';
 import {addAssetsOnScene} from './utils/addAssetsOnScene.js';
 import * as PlayerMovement from './utils/playerMovement.js';
 import * as Animations from './utils/animateMesh.js';
-
-/*TODO*/
-import $ from 'jquery'
-
-function showNotification(HTMLText, color){
-  $("#notification_bar p").html(HTMLText);
-  $("#notification_bar").css( 'opacity', 0.9 ).animate({
-    width:320
-  }, 500);
-}
-
-showNotification("oui")
-/*TODO*/
+import * as PlayerCollisions from './utils/playerCollisions.js';
 
 let Clock = new THREE.Clock();
 THREE.Cache.enabled = true;//So we can request several time the same file without worrying : https://threejs.org/docs/#api/en/loaders/FileLoader
 
-const APP_DEBUG = true;//Turn true to show player position in browser console
+const APP_DEBUG = false;//Turn true to show player position in browser console
 
 /* --------------------- */
 /* |  SCENE CREATION   | */
@@ -60,6 +48,7 @@ function animate() {
   if(APP_DEBUG)console.log("Player position X : "+assets.player.scene.position.x+ " Y : "+assets.player.scene.position.y);
 
   PlayerMovement.updatePlayerPositionAnimation(assets.player, camera, scene);//Updating player position and rotation
+  PlayerCollisions.checkPlayerCollisions(assets.player, assets.linkPlates);//Checking collisions with player
   Animations.updateAnimations(Clock.getDelta());//Playing animations
 
 	renderer.render( scene, camera );//Calculating and redering new frame

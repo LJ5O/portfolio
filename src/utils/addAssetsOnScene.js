@@ -378,12 +378,17 @@ export async function addAssetsOnScene(scene){
     ADDING LINK PLATES
     -------------------- */
 
+    let linkPlates = [];
+
     const linkPlate = await loadModel('src/objects/models/linkPlate.gltf');
     linkPlate.scene.scale.set(0.4,0.05,0.4);
     linkPlate.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));//Must be standing up
     alignGround(ground, linkPlate.scene);
     linkPlate.scene.position.y = 2;
+    linkPlate.scene.position.z = 1;
     scene.add( linkPlate.scene );
+    linkPlate.onEnterHitbox = ()=>{console.log('"Hello World !"')};
+    linkPlates.push(linkPlate);
 
     /* --------------------
     ADDING GRASS
@@ -463,6 +468,7 @@ export async function addAssetsOnScene(scene){
         pathTiles: pathTiles,
         nameplateModel: nameplateModel,
         worldStatue: worldStatue,
-        printerStatue: printerStatue
+        printerStatue: printerStatue,
+        linkPlates:linkPlates
     };
 }
