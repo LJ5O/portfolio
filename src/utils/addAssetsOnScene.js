@@ -388,7 +388,7 @@ export async function addAssetsOnScene(scene){
     linkPlate.scene.position.y = 2;
     linkPlate.scene.position.z = 1;
     scene.add( linkPlate.scene );
-    linkPlate.onEnterHitbox = ()=>{Notifications.showNotification("Hello World !")};
+    linkPlate.onEnterHitbox = ()=>{Notifications.showNotification("Hello World !", ()=>{console.log('ok')})};
     linkPlate.onLeaveHitbox = ()=>{Notifications.hideNotification()};
     linkPlates.push(linkPlate);
 
