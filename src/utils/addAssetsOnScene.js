@@ -335,6 +335,18 @@ export async function addAssetsOnScene(scene){
     scene.add(nameplateModel.scene);
 
     /* --------------------
+    DEFINING LINK PLATES
+    -------------------- */
+    // That's used for signs but may also be used elsewhere
+    let linkPlates = [];
+
+    const linkPlate = await loadModel('src/objects/models/linkPlate.gltf');
+    linkPlate.scene.scale.set(0.4,0.05,0.4);
+    linkPlate.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
+    alignGround(ground, linkPlate.scene);
+    linkPlate.scene.position.z += 0.25;//So it can collide with player hitbox
+
+    /* --------------------
     ADDING SIGNS
     -------------------- */
     const sign = await loadModel('src/objects/models/sign.gltf');//Sign model prepared
@@ -374,23 +386,33 @@ export async function addAssetsOnScene(scene){
         signPlane.position.set( signCopy.position.x + 0.06, 1.347, 1.65);//Determined by hand
         scene.add(signPlane);
     }
+
+    /* SOCIAL NETWORKS */
+    signPictures = ['src/objects/textures/github.png'];
+    const notificationsLinks = ['https://github.com/LJ5O'];
+    for(let i=0; i<1; i++){
+        const signCopy = sign.scene.clone();
+        signCopy.position.x = -20.3 + i*5;
+        signCopy.position.y = 1.36;
+        scene.add( signCopy );
+
+        const signPlaneMaterial = new THREE.MeshBasicMaterial({ map:textureLoader.load(signPictures[i]) });
+        const signPlane = new THREE.Mesh(SignPlanegeometry, signPlaneMaterial);
+        signPlane.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
+        signPlane.position.set( signCopy.position.x + 0.06, 1.347, 1.65);//Determined by hand
+        scene.add(signPlane);
+
+        //ADDING LINK PLATES
+        linkPlate.scene.position.y = 0.5;
+        linkPlate.scene.position.x = -20.3 + i*5;
     
-    /* --------------------
-    ADDING LINK PLATES
-    -------------------- */
+        scene.add( linkPlate.scene );
+        linkPlate.onEnterHitbox = ()=>{Notifications.showNotification("Vous pouvez ouvrir ce lien avec la touche Entrée, ou en cliquant <a target=\"_blank\" href=\""+notificationsLinks[i]+"\">ici</a> !",
+            ()=>{Notifications.openLink(notificationsLinks[i])} )};
+        linkPlate.onLeaveHitbox = ()=>{Notifications.hideNotification()};
+        linkPlates.push(linkPlate);
 
-    let linkPlates = [];
-
-    const linkPlate = await loadModel('src/objects/models/linkPlate.gltf');
-    linkPlate.scene.scale.set(0.4,0.05,0.4);
-    linkPlate.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));//Must be standing up
-    alignGround(ground, linkPlate.scene);
-    linkPlate.scene.position.y = 2;
-    linkPlate.scene.position.z = 1;
-    scene.add( linkPlate.scene );
-    linkPlate.onEnterHitbox = ()=>{Notifications.showNotification("Hello World !", ()=>{console.log('ok')})};
-    linkPlate.onLeaveHitbox = ()=>{Notifications.hideNotification()};
-    linkPlates.push(linkPlate);
+    }
 
     /* --------------------
     ADDING GRASS

@@ -32,3 +32,12 @@ $(document).on('keyup', function (e) {
     optionalFunction();
   }
 });
+
+export function openLink(link) {
+  if (!link) {
+    console.error("No link given !");
+    return;
+  }
+
+  window.open(link, '_blank');
+}
