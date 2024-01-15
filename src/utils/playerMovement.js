@@ -52,21 +52,38 @@ export function handleKeyDown(event) {
         Takes player, camera and scene*/
 
     //COLLIDERS
-    const raycaster = new THREE.Raycaster();//Creating a raycaster from the player
     const rayDirection = new THREE.Vector3(playerDirection.x, playerDirection.y, 0).normalize();
-    raycaster.set(player.scene.position, rayDirection);
 
-    const intersects = raycaster.intersectObjects(scene.children, true);//Gettings objects on the path of this raycaster
+    //Two rays are created : one for legs, one for torso/head
+    const raycaster = new THREE.Raycaster();
+    const rayPosition = player.scene.position.clone();
+    rayPosition.z = 0.2;//Adjusted by hand, is enough to collide with nearly everything
+    raycaster.set(rayPosition, rayDirection);
 
+    const raycaster2 = new THREE.Raycaster();
+    const rayPosition2 = player.scene.position.clone();
+    rayPosition2.z = 0.9;
+    raycaster2.set(rayPosition2, rayDirection);
+    
+    const intersects = [...raycaster.intersectObjects(scene.children, true), ...raycaster2.intersectObjects(scene.children, true)];//Merging the two lists together, so we get all objects collided by ray1 or 2
+    ;
+    
     const collidingDistance = 0.5;
-    const collisionThreshold = 0.2;
-    for(let i=0; i<intersects.length; i++){
-      //if(intersects[i].distance<2 && intersects[i].distance>collisionThreshold)console.log(intersects[i]);
-      if(intersects[i].distance>collisionThreshold && intersects[i].distance<collidingDistance){
-        //Valid colliding object, not too close ( player leg / arm ), but not too far
-        playerDirection.set(0, 0, 0);
-        break;
-      }
+    const collisionThreshold = 0.01;
+    
+    for (let i = 0; i < intersects.length; i++) {
+        const collidedObject = intersects[i].object;
+    
+        // Check if the collided object is not the player itself
+        if (!player.scene.children.includes(collidedObject)) {
+            if (intersects[i].distance > collisionThreshold && intersects[i].distance < collidingDistance) {
+                // Valid colliding object, not too close (player leg/arm), but not too far
+                /*console.log(collidedObject);
+                console.log(intersects[i].distance);*/
+                playerDirection.set(0, 0, 0);
+                break;
+            }
+        }
     }
 
     //MOVING
