@@ -7,5 +7,7 @@ export function showPicture(link){
 }
 //Hide picture :
 export function hidePicture(){
-  $("#picture_zoom").fadeOut(400);
+  $("#picture_zoom").fadeOut(400, ()=>{
+    $("#picture_zoom img").attr("src", '');
+  });
 }

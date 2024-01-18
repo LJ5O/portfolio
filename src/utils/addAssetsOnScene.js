@@ -1,3 +1,4 @@
+//Yes, this file is BIG, yes I should refactor that into smaller files, yes I don't have so much time
 import * as THREE from 'three';
 import * as MathUtils from 'three/src/math/MathUtils.js';
 import { createGround } from '../objects/ground.js';
@@ -354,6 +355,19 @@ export async function addAssetsOnScene(scene){
     const zoomPlate = await loadModel('src/objects/models/zoomPicturePlate.gltf');
     preparePlate(zoomPlate);
 
+    function addZoomPlate(x, y, link){
+        //Function used to add easily a zoom plate in the scene
+        const zoomPlateClone = zoomPlate.scene.clone();
+        zoomPlateClone.position.y = y;
+        zoomPlateClone.position.x = x;
+    
+        scene.add( zoomPlateClone );
+        new Image().src = link; //Seems useless, but that's actually used to save the picture in cache, so we can directly show it up when neccessary
+        zoomPlateClone.onEnterHitbox = ()=>{ZoomPictures.showPicture(link)};
+            zoomPlateClone.onLeaveHitbox = ()=>{ZoomPictures.hidePicture()};
+        plates.push(zoomPlateClone);
+    }
+
     /* --------------------
     ADDING SIGNS
     -------------------- */
@@ -378,6 +392,9 @@ export async function addAssetsOnScene(scene){
         signPlane.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
         signPlane.position.set( signCopy.position.x + 0.06, 1.347, 1.65);//Determined by hand
         scene.add(signPlane);
+
+        //Zoom picture plate
+        addZoomPlate(10 + i*5, 0.5, signPictures[i]);
     }
 
     /* PROFESSIONAL EXPERIENCES */
@@ -395,14 +412,7 @@ export async function addAssetsOnScene(scene){
         scene.add(signPlane);
 
         //Zoom picture plate
-        const zoomPlateClone = zoomPlate.scene.clone();
-        zoomPlateClone.position.y = 0.5;
-        zoomPlateClone.position.x = -4 - i*5;
-    
-        scene.add( zoomPlateClone );
-        zoomPlateClone.onEnterHitbox = ()=>{ZoomPictures.showPicture(signPictures[i])};
-            zoomPlateClone.onLeaveHitbox = ()=>{ZoomPictures.hidePicture()};
-        plates.push(zoomPlateClone);
+        addZoomPlate(-4 - i*5, 0.5, signPictures[i]);
     }
 
     /* SOCIAL NETWORKS */
