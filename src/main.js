@@ -48,7 +48,7 @@ function animate() {
   if(APP_DEBUG)console.log("Player position X : "+assets.player.scene.position.x+ " Y : "+assets.player.scene.position.y);
 
   PlayerMovement.updatePlayerPositionAnimation(assets.player, camera, scene);//Updating player position and rotation
-  PlayerCollisions.checkPlayerCollisions(assets.player, assets.linkPlates);//Checking collisions with player
+  PlayerCollisions.checkPlayerCollisions(assets.player, assets.plates);//Checking collisions with player
   Animations.updateAnimations(Clock.getDelta());//Playing animations
 
 	renderer.render( scene, camera );//Calculating and redering new frame

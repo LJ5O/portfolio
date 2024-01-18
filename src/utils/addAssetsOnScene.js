@@ -3,6 +3,7 @@ import * as MathUtils from 'three/src/math/MathUtils.js';
 import { createGround } from '../objects/ground.js';
 import {loadModel} from './import.js';
 import * as Notifications from '../utils/notification.js';
+import * as ZoomPictures from '../utils/pictureZoom.js';
 const textureLoader = new THREE.TextureLoader();
 
 
@@ -335,16 +336,23 @@ export async function addAssetsOnScene(scene){
     scene.add(nameplateModel.scene);
 
     /* --------------------
-    DEFINING LINK PLATES
+    DEFINING PLATES
     -------------------- */
     // That's used for signs but may also be used elsewhere
-    let linkPlates = [];
+    let plates = [];
+
+    function preparePlate(plateModel){
+        plateModel.scene.scale.set(0.4,0.05,0.4);
+        plateModel.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
+        alignGround(ground, plateModel.scene);
+        plateModel.scene.position.z += 0.25;//So it can collide with player hitbox
+    }
 
     const linkPlate = await loadModel('src/objects/models/linkPlate.gltf');
-    linkPlate.scene.scale.set(0.4,0.05,0.4);
-    linkPlate.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
-    alignGround(ground, linkPlate.scene);
-    linkPlate.scene.position.z += 0.25;//So it can collide with player hitbox
+    preparePlate(linkPlate);
+
+    const zoomPlate = await loadModel('src/objects/models/zoomPicturePlate.gltf');
+    preparePlate(zoomPlate);
 
     /* --------------------
     ADDING SIGNS
@@ -358,8 +366,8 @@ export async function addAssetsOnScene(scene){
     const SignPlanegeometry = new THREE.PlaneGeometry(2.95, 1.55);
 
     /* SCHOOLS */
-    let signPictures = ['src/objects/textures/epid.png', 'src/objects/textures/iutCalais.png']
     for(let i=0; i<2; i++){
+        const signPictures = ['src/objects/textures/epid.png', 'src/objects/textures/iutCalais.png']
         const signCopy = sign.scene.clone();
         signCopy.position.x = 10 + i*5;
         signCopy.position.y = 1.36;
@@ -373,8 +381,8 @@ export async function addAssetsOnScene(scene){
     }
 
     /* PROFESSIONAL EXPERIENCES */
-    signPictures = ['src/objects/textures/hachinohe.png'];
     for(let i=0; i<1; i++){
+        const signPictures = ['src/objects/textures/hachinohe.png'];
         const signCopy = sign.scene.clone();
         signCopy.position.x = -4 - i*5;
         signCopy.position.y = 1.36;
@@ -385,12 +393,23 @@ export async function addAssetsOnScene(scene){
         signPlane.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
         signPlane.position.set( signCopy.position.x + 0.06, 1.347, 1.65);//Determined by hand
         scene.add(signPlane);
+
+        //Zoom picture plate
+        const zoomPlateClone = zoomPlate.scene.clone();
+        zoomPlateClone.position.y = 0.5;
+        zoomPlateClone.position.x = -4 - i*5;
+    
+        scene.add( zoomPlateClone );
+        zoomPlateClone.onEnterHitbox = ()=>{ZoomPictures.showPicture(signPictures[i])};
+            zoomPlateClone.onLeaveHitbox = ()=>{ZoomPictures.hidePicture()};
+        plates.push(zoomPlateClone);
     }
 
     /* SOCIAL NETWORKS */
-    signPictures = ['src/objects/textures/github.png'];
-    const notificationsLinks = ['https://github.com/LJ5O'];
     for(let i=0; i<1; i++){
+        const signPictures = ['src/objects/textures/github.png'];
+        const notificationsLinks = ['https://github.com/LJ5O'];
+
         const signCopy = sign.scene.clone();
         signCopy.position.x = -20.3 + i*5;
         signCopy.position.y = 1.36;
@@ -403,14 +422,15 @@ export async function addAssetsOnScene(scene){
         scene.add(signPlane);
 
         //ADDING LINK PLATES
-        linkPlate.scene.position.y = 0.5;
-        linkPlate.scene.position.x = -20.3 + i*5;
+        const linkPlateClone = linkPlate.scene.clone();
+        linkPlateClone.position.y = 0.5;
+        linkPlateClone.position.x = -20.3 + i*5;
     
-        scene.add( linkPlate.scene );
-        linkPlate.onEnterHitbox = ()=>{Notifications.showNotification("Vous pouvez ouvrir ce lien avec la touche Entrée, ou en cliquant <a target=\"_blank\" href=\""+notificationsLinks[i]+"\">ici</a> !",
+        scene.add( linkPlateClone );
+        linkPlateClone.onEnterHitbox = ()=>{Notifications.showNotification("Vous pouvez ouvrir ce lien avec la touche Entrée, ou en cliquant <a target=\"_blank\" href=\""+notificationsLinks[i]+"\">ici</a> !",
             ()=>{Notifications.openLink(notificationsLinks[i])} )};
-        linkPlate.onLeaveHitbox = ()=>{Notifications.hideNotification()};
-        linkPlates.push(linkPlate);
+            linkPlateClone.onLeaveHitbox = ()=>{Notifications.hideNotification()};
+        plates.push(linkPlateClone);
 
     }
 
@@ -493,6 +513,6 @@ export async function addAssetsOnScene(scene){
         nameplateModel: nameplateModel,
         worldStatue: worldStatue,
         printerStatue: printerStatue,
-        linkPlates: linkPlates
+        plates: plates
     };
 }

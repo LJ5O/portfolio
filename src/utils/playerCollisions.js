@@ -8,12 +8,12 @@ export function checkPlayerCollisions(player, objects) {
   const playerBoundingBox = new THREE.Box3().setFromObject(player.scene);
 
   for (const object of objects) {
-    if (!object || !object.scene) {
-      console.warn('An object in the list does not have a "scene" property. It will be ignored.');
+    if (!object) {
+      console.warn('An object in the list is not valid. It will be ignored.');
       continue;
     }
 
-    const objectBoundingBox = new THREE.Box3().setFromObject(object.scene);
+    const objectBoundingBox = new THREE.Box3().setFromObject(object);
 
     //Check if the object is currently inside the hitbox
     const isInsideHitbox = playerBoundingBox.intersectsBox(objectBoundingBox);
