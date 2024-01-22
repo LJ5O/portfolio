@@ -444,6 +444,92 @@ export async function addAssetsOnScene(scene){
 
     }
 
+    /* LANGUAGES & TECHNOLOGIES */
+    const signCopy = sign.scene.clone();
+    signCopy.position.x = -12;
+    signCopy.position.y = 10.7;
+    scene.add( signCopy );
+
+    const signPlaneMaterial = new THREE.MeshBasicMaterial({ map:textureLoader.load("src/objects/textures/known_technologies.png") });
+    const signPlane = new THREE.Mesh(SignPlanegeometry, signPlaneMaterial);
+    signPlane.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
+    signPlane.position.set( signCopy.position.x + 0.06, signCopy.position.y - 0.015, 1.65);// Determined by hand
+    scene.add(signPlane);
+    
+    //Zoom picture plate
+    addZoomPlate(-12, 9.5, "src/objects/textures/known_technologies.png");
+
+    /* --------------------
+    FLOWERS GARDEN
+    -------------------- */
+    //Loading flowers
+    const flowerModel = await loadModel('src/objects/models/flower.gltf');
+    flowerModel.scene.scale.set(0.75,0.75,0.75);
+    flowerModel.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));//Must be standing up
+    alignGround(ground, flowerModel.scene);
+
+    //Flower width :
+    const flowersHitbox = new THREE.Box3().setFromObject(flowerModel.scene);
+    const flowerWidth = flowersHitbox.max.y - flowersHitbox.min.y;
+
+    const centralPoint = {x:-12, y:10};// Point used for central symetry with flowers
+    let flowers = [];// Will contain flowers. Used for the symetry
+
+    const flowersPos = [ /*See below*/ ];//Like trees, a list of coords for flowers. That's only for the upper left corner, as we're using symetry for the other corners.
+
+    /* Placing flowers in flowersPos to create a circle */
+    
+    const radius = 2.5; // Circle radius
+    const numFlowers = 10;
+
+    for (let i = 1; i < numFlowers; i++) {
+        const angle = (i / numFlowers) * (Math.PI / 2); // First quart of circle
+
+        //Coords, polar to Cartesian
+        const x = centralPoint.x + radius * Math.cos(angle);
+        const y = centralPoint.y + radius * Math.sin(angle);
+
+        flowersPos.push({ x, y });
+    }
+
+    /* End of placement */
+
+    for(let i = 0; i<flowersPos.length; i++){
+        //That's here that the symetry part works
+        const currentPos = flowersPos[i];
+
+        // Adding the flower at the original position
+        const flower = flowerModel.scene.clone();
+        flower.position.x = currentPos.x;
+        flower.position.y = currentPos.y;
+        flowers.push(flower);
+    
+        // Calculating positions for other corners using symmetry
+        const xSym = 2 * centralPoint.x - currentPos.x;
+        const ySym = 2 * centralPoint.y - currentPos.y;
+    
+        // Adding flowers at other symmetrical positions
+        const flowerSymX = flowerModel.scene.clone();
+        flowerSymX.position.x = xSym;
+        flowerSymX.position.y = currentPos.y;
+        flowers.push(flowerSymX);
+    
+        const flowerSymY = flowerModel.scene.clone();
+        flowerSymY.position.x = currentPos.x;
+        flowerSymY.position.y = ySym;
+        flowers.push(flowerSymY);
+    
+        const flowerSymXY = flowerModel.scene.clone();
+        flowerSymXY.position.x = xSym;
+        flowerSymXY.position.y = ySym;
+        flowers.push(flowerSymXY);  
+    }
+
+    for(let i = 0; i<flowers.length; i++){
+        flowers[i].rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad( getRndInteger(0,4) * 90));// Random rotation on Z axis
+        scene.add(flowers[i]);
+    }
+
     /* --------------------
     ADDING GRASS
     -------------------- */
@@ -452,14 +538,17 @@ export async function addAssetsOnScene(scene){
     const grass3 = await loadModel('src/objects/models/grass/grass3.gltf');
     const grass4 = await loadModel('src/objects/models/grass/grass4.gltf');
     const grass5 = await loadModel('src/objects/models/grass/grass5.gltf');
-    const grassModels = [grass1,grass2,grass3,grass4,grass5];// Planned for later : https://threejs.org/docs/#api/en/objects/InstancedMesh
+    const grassModels = [grass1,grass2,grass3,grass4,grass5, flowerModel];// Planned for later : https://threejs.org/docs/#api/en/objects/InstancedMesh
 
-    grassModels.forEach(item => {
-        //Prepare models before placing them
-        item.scene.scale.set(0.1, 0.1, 0.1);
-        item.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
-        alignGround(ground, item.scene);
-    });
+    for (let i = 0; i < grassModels.length; i++) {
+
+        if (grassModels[i] === flowerModel) continue;// Flower model already prepared before
+    
+        // Prepare models before placing them
+        grassModels[i].scene.scale.set(0.1, 0.1, 0.1);
+        grassModels[i].scene.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), MathUtils.degToRad(90));
+        alignGround(ground, grassModels[i].scene);
+    }
 
     function getRndInteger(min, max) {
         return Math.floor(Math.random() * (max - min) ) + min;
