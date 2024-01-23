@@ -258,6 +258,17 @@ export async function addAssetsOnScene(scene){
         scene.add(sakuraClone);
     });
 
+    const appleTreeLocations = [{x:-15.25,y:9.92}, {x:-9.02,y:9.92}, {x:-15.25,y:7.92}, {x:-9.02,y:7.92}, {x:-15.25,y:5.92}, {x:-9.02,y:5.92}, {x:-15.25,y:3.92}, {x:-9.02,y:3.92},
+        {x:-15.25,y:1.92}, {x:-9.02,y:1.92} ];
+
+    appleTreeLocations.forEach(newPos => {
+        const treeAppleOakModelClone = treeAppleOakModel.scene.clone();
+        treeAppleOakModelClone.position.x = newPos.x;
+        treeAppleOakModelClone.position.y = newPos.y;
+        treeAppleOakModelClone.rotation.y = Math.random() * Math.PI * 2;
+        scene.add(treeAppleOakModelClone);
+    });
+
     /* --------------------
     ADDING GARDEN's STATUES
     -------------------- */
