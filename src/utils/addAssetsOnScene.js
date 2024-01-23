@@ -329,6 +329,17 @@ export async function addAssetsOnScene(scene){
     scene.add( gamepad.scene );
 
     /* --------------------
+    ADDING TEMPLE
+    -------------------- */
+    const temple = await loadModel('src/objects/models/temple.gltf');
+    temple.scene.scale.set(0.15,0.15,0.15);
+    temple.scene.position.set(14.92,13.26,0);
+    temple.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));//Must be standing up
+    temple.scene.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(-90));
+    alignGround(ground, temple.scene);
+    scene.add( temple.scene );
+
+    /* --------------------
     ADDING NAME & JOB
     -------------------- */
     let nameplateModel;
