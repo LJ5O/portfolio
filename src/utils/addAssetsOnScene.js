@@ -269,6 +269,21 @@ export async function addAssetsOnScene(scene){
         scene.add(treeAppleOakModelClone);
     });
 
+    const OakTreeLocations = [{x:-4.5,y:4.8}, {x:-3.1,y:9.8}, {x:-7.15,y:13}, {x:-20,y:6}, {x:-17.4,y:14.3}, {x:-14,y:21.5}, {x:-4.5,y:16}, {x:-11.7,y:15.46}, {x:-5.9,y:19.45},
+        {x:-21.6,y:19.5}, {x:6,y:4.26}, {x:3.18,y:7}, {x:10.6,y:2.96}, {x:10.1,y:7.36}, {x:6.78,y:10.03}, {x:3.57,y:12.7}, {x:9.34,y:15}, {x:6.55,y:18}, {x:15.76,y:17.7},
+        {x:3.6,y:20}, {x:12,y:16.65}, {x:9.5,y:20.5}, {x:16.15,y:22.3}, {x:19.95,y:18.1}, {x:19.7,y:13.2}, {x:22.5,y:9.5} , {x:20.4,y:6.9}, {x:16.2,y:6.2}, {x:21,y:-9.67},
+        {x:18.6,y:3.6}, {x:3.5,y:4}, {x:3.4,y:-4.3}, {x:8,y:-3}, {x:6.7,y:-6.7}, {x:11.26,y:-5.8}, {x:14,y:-7}, {x:13.3,y:-3.7}, {x:19,y:-2.5}, {x:21.8,y:-5.5}, {x:22.6,y:-14.6},
+        {x:21,y:-20}, {x:22.4,y:-18}, {x:18.5,y:-22.6}, {x:14,y:-21}, {x:10.5,y:-22.7}, {x:9.6,y:-19.5}, {x:3.8,y:-22.8}, {x:6.5,y:-21.8}, {x:17,y:-20.2}, {x:2.3,y:-12},
+        {x:1.87,y:-15.88}, {x:3.12,y:-20}];
+
+    OakTreeLocations.forEach(newPos => {
+        const OakTreeClone = treeOakModel.scene.clone();
+        OakTreeClone.position.x = newPos.x;
+        OakTreeClone.position.y = newPos.y;
+        OakTreeClone.rotation.y = Math.random() * Math.PI * 2;
+        scene.add(OakTreeClone);
+    });
+
     /* --------------------
     ADDING GARDEN's STATUES
     -------------------- */
