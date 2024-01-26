@@ -22,37 +22,39 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
 //Here, we create/load every asset used, and add it in the scene
-let assets  = await addAssetsOnScene(scene);
+addAssetsOnScene(scene).then(assets => {
 
-/* --------------------- */
-/* |      MOVEMENT     | */
-/* --------------------- */
-// Events to listen keyboard inputs
-document.addEventListener('keydown', PlayerMovement.handleKeyDown);
-document.addEventListener('keyup', PlayerMovement.handleKeyUp);
+  /* --------------------- */
+  /* |      MOVEMENT     | */
+  /* --------------------- */
+  // Events to listen keyboard inputs
+  document.addEventListener('keydown', PlayerMovement.handleKeyDown);
+  document.addEventListener('keyup', PlayerMovement.handleKeyUp);
 
-/* --------------------- */
-/* |     ANIMATIONS    | */
-/* --------------------- */
-//We can add an animationMixer on objects, and define ready to play actions on objects
-//https://threejs.org/docs/#api/en/animation/AnimationAction
-Animations.addAnimationMixerOnMesh(assets.player, ["Walk"]);
-Animations.addAnimationMixerOnMesh(assets.nameplateModel, ["Animation"]);assets.nameplateModel.animationActions.Animation.play();
-Animations.addAnimationMixerOnMesh(assets.worldStatue, ["Animation"]);assets.worldStatue.animationActions.Animation.play();
-Animations.addAnimationMixerOnMesh(assets.printerStatue, ["Printing"]);assets.printerStatue.animationActions.Printing.play();
+  /* --------------------- */
+  /* |     ANIMATIONS    | */
+  /* --------------------- */
+  //We can add an animationMixer on objects, and define ready to play actions on objects
+  //https://threejs.org/docs/#api/en/animation/AnimationAction
+  Animations.addAnimationMixerOnMesh(assets.player, ["Walk"]);
+  Animations.addAnimationMixerOnMesh(assets.nameplateModel, ["Animation"]);assets.nameplateModel.animationActions.Animation.play();
+  Animations.addAnimationMixerOnMesh(assets.worldStatue, ["Animation"]);assets.worldStatue.animationActions.Animation.play();
+  Animations.addAnimationMixerOnMesh(assets.printerStatue, ["Printing"]);assets.printerStatue.animationActions.Printing.play();
 
 
-function animate() {
-	requestAnimationFrame( animate );
+  function animate() {
+    requestAnimationFrame( animate );
 
-  if(APP_DEBUG)console.log("Player position X : "+assets.player.scene.position.x+ " Y : "+assets.player.scene.position.y);
+    if(APP_DEBUG)console.log("Player position X : "+assets.player.scene.position.x+ " Y : "+assets.player.scene.position.y);
 
-  PlayerMovement.updatePlayerPositionAnimation(assets.player, camera, scene);//Updating player position and rotation
-  PlayerCollisions.checkPlayerCollisions(assets.player, assets.plates);//Checking collisions with player
-  Animations.updateAnimations(Clock.getDelta());//Playing animations
+    PlayerMovement.updatePlayerPositionAnimation(assets.player, camera, scene);//Updating player position and rotation
+    PlayerCollisions.checkPlayerCollisions(assets.player, assets.plates);//Checking collisions with player
+    Animations.updateAnimations(Clock.getDelta());//Playing animations
 
-	renderer.render( scene, camera );//Calculating and redering new frame
+    renderer.render( scene, camera );//Calculating and redering new frame
 
-}
-console.log("Ready to render scene, placed objects : "+scene.children.length);
-animate();
+  }
+  console.log("Ready to render scene, placed objects : "+scene.children.length);
+  animate();
+  
+});
