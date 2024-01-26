@@ -1,6 +1,6 @@
 # My portfolio
 
-You can find on this website everything about me/
+You can find on this [website](https://lj5o.github.io/) everything about me/
 
 I made it with [Three.js](https://threejs.org/), and used Blender to create 3D models and animations.
 
