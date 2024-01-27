@@ -482,20 +482,31 @@ export async function addAssetsOnScene(scene){
     }
 
     /* LANGUAGES & TECHNOLOGIES */
-    const signCopy = sign.scene.clone();
-    signCopy.position.x = -12;
-    signCopy.position.y = 10.7;
-    scene.add( signCopy );
+    const techSign = sign.scene.clone();
+    techSign.position.x = -12;
+    techSign.position.y = 10.7;
+    scene.add( techSign );
 
-    const signPlaneMaterial = new THREE.MeshBasicMaterial({ map:textureLoader.load("/objects/textures/known_technologies.png") });
-    const signPlane = new THREE.Mesh(SignPlanegeometry, signPlaneMaterial);
-    signPlane.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
-    signPlane.position.set( signCopy.position.x + 0.06, signCopy.position.y - 0.015, 1.65);// Determined by hand
-    scene.add(signPlane);
-    
-    //Zoom picture plate
+    const techSignMaterial = new THREE.MeshBasicMaterial({ map:textureLoader.load("/objects/textures/known_technologies.png") });
+    const techSignPlane = new THREE.Mesh(SignPlanegeometry, techSignMaterial);
+    techSignPlane.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
+    techSignPlane.position.set( techSign.position.x + 0.06, techSign.position.y - 0.015, 1.65);// Determined by hand
+    scene.add(techSignPlane);
     addZoomPlate(-12, 9.5, "/objects/textures/known_technologies.png");
 
+    /* SPOKEN LANGUAGES */
+    const spokenLanguagesSign = sign.scene.clone();
+    spokenLanguagesSign.position.x = 19.9;
+    spokenLanguagesSign.position.y = 11;
+    scene.add( spokenLanguagesSign );
+
+    const spokenLanguagesMaterial = new THREE.MeshBasicMaterial({ map:textureLoader.load("/objects/textures/spoken_languages.png") });
+    const spokenLanguagesPlane = new THREE.Mesh(SignPlanegeometry, spokenLanguagesMaterial);
+    spokenLanguagesPlane.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
+    spokenLanguagesPlane.position.set( spokenLanguagesSign.position.x + 0.06, spokenLanguagesSign.position.y - 0.015, 1.65);// Determined by hand
+    scene.add(spokenLanguagesPlane);
+    addZoomPlate(19.9, 10.2, "/objects/textures/spoken_languages.png");
+    
     /* --------------------
     FLOWERS GARDEN
     -------------------- */
