@@ -34,7 +34,7 @@ export async function addAssetsOnScene(scene){
        ADDING GROUND AND FENCES
         -------------------- */
     let fences = [];//List of created fences
-    const fenceModel = await loadModel('src/objects/models/fence.gltf');
+    const fenceModel = await loadModel('/objects/models/fence.gltf');
 
     //Getting width of one fence
     fenceModel.scene.scale.set(0.05, 0.05, 0.05);
@@ -131,7 +131,7 @@ export async function addAssetsOnScene(scene){
         -------------------- */
     //Works like fences
     let pathTiles = [];//List of created pathTiles
-    const pathTilesModel = await loadModel('src/objects/models/path.gltf');
+    const pathTilesModel = await loadModel('/objects/models/path.gltf');
     pathTilesModel.scene.scale.set(0.2,0.01,0.2);
     pathTilesModel.scene.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), MathUtils.degToRad(90));//Must be on the ground
     alignGround(ground, pathTilesModel.scene);
@@ -212,10 +212,10 @@ export async function addAssetsOnScene(scene){
     /* --------------------
     ADDING TREES
     -------------------- */
-    const treeOakModel = await loadModel('src/objects/models/tree/tree1.gltf');
-    const treeAppleOakModel = await loadModel('src/objects/models/tree/tree2.gltf');
-    const treeSakuraModel = await loadModel('src/objects/models/tree/tree3.gltf');
-    const treePineModel = await loadModel('src/objects/models/tree/tree4.gltf');
+    const treeOakModel = await loadModel('/objects/models/tree/tree1.gltf');
+    const treeAppleOakModel = await loadModel('/objects/models/tree/tree2.gltf');
+    const treeSakuraModel = await loadModel('/objects/models/tree/tree3.gltf');
+    const treePineModel = await loadModel('/objects/models/tree/tree4.gltf');
 
     function prepareTree(treeModel){
         //Small function to apply every neccessary transformation on trees before placing them
@@ -287,7 +287,7 @@ export async function addAssetsOnScene(scene){
     /* --------------------
     ADDING GARDEN's STATUES
     -------------------- */
-    const worldStatue = await loadModel('src/objects/models/statueWorld.gltf');
+    const worldStatue = await loadModel('/objects/models/statueWorld.gltf');
     worldStatue.scene.scale.set(0.09,0.09,0.09);
     worldStatue.scene.position.x = 9.8;
     worldStatue.scene.position.y = -13.6;
@@ -296,7 +296,7 @@ export async function addAssetsOnScene(scene){
     alignGround(ground, worldStatue.scene);
     scene.add( worldStatue.scene );
 
-    const printerStatue = await loadModel('src/objects/models/statue3DPrinter.gltf');
+    const printerStatue = await loadModel('/objects/models/statue3DPrinter.gltf');
     printerStatue.scene.scale.set(0.09,0.09,0.09);
     printerStatue.scene.position.x = 14.3;
     printerStatue.scene.position.y = -13.6;
@@ -308,7 +308,7 @@ export async function addAssetsOnScene(scene){
     /* --------------------
     ADDING GARDEN's TABLE AND PROPS ON IT
     -------------------- */
-    const table = await loadModel('src/objects/models/table.gltf');
+    const table = await loadModel('/objects/models/table.gltf');
     table.scene.scale.set(0.09,0.09,0.09);
     table.scene.position.x = 16;
     table.scene.position.y = -17.35;
@@ -316,7 +316,7 @@ export async function addAssetsOnScene(scene){
     alignGround(ground, table.scene);
     scene.add( table.scene );
 
-    const gameboy = await loadModel('src/objects/models/gameboy.gltf');
+    const gameboy = await loadModel('/objects/models/gameboy.gltf');
     gameboy.scene.scale.set(0.01,0.01,0.01);
     gameboy.scene.position.x = 16.62;
     gameboy.scene.position.y = -17.2;
@@ -325,7 +325,7 @@ export async function addAssetsOnScene(scene){
     alignGround(table.scene, gameboy.scene);
     scene.add( gameboy.scene );
 
-    const computer = await loadModel('src/objects/models/computer.gltf');
+    const computer = await loadModel('/objects/models/computer.gltf');
     computer.scene.scale.set(0.02,0.02,0.02);
     computer.scene.position.x = 16.2;
     computer.scene.position.y = -17.1;
@@ -334,7 +334,7 @@ export async function addAssetsOnScene(scene){
     alignGround(table.scene, computer.scene);
     scene.add( computer.scene );
 
-    const gamepad = await loadModel('src/objects/models/gamepad.gltf');
+    const gamepad = await loadModel('/objects/models/gamepad.gltf');
     gamepad.scene.scale.set(0.01,0.01,0.01);
     gamepad.scene.position.x = 15.7;
     gamepad.scene.position.y = -17.1;
@@ -346,7 +346,7 @@ export async function addAssetsOnScene(scene){
     /* --------------------
     ADDING TEMPLE
     -------------------- */
-    const temple = await loadModel('src/objects/models/temple.gltf');
+    const temple = await loadModel('/objects/models/temple.gltf');
     temple.scene.scale.set(0.15,0.15,0.15);
     temple.scene.position.set(14.92,13.26,0);
     temple.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));//Must be standing up
@@ -359,11 +359,11 @@ export async function addAssetsOnScene(scene){
     -------------------- */
     let nameplateModel;
     if(true){//Will be used later for localization
-        nameplateModel = await loadModel('src/objects/models/name/Name.gltf');
+        nameplateModel = await loadModel('/objects/models/name/name.gltf');
     }else if(false){
-        nameplateModel = await loadModel('src/objects/models/name/NameJP.gltf');
+        nameplateModel = await loadModel('/objects/models/name/NameJP.gltf');
     }else{
-        nameplateModel = await loadModel('src/objects/models/name/NameEN.gltf');
+        nameplateModel = await loadModel('/objects/models/name/NameEN.gltf');
     }
     nameplateModel.scene.scale.set(0.2,0.2,0.2);
     nameplateModel.scene.rotateOnWorldAxis(new THREE.Vector3(1, 0, 0), MathUtils.degToRad(90));
@@ -386,10 +386,10 @@ export async function addAssetsOnScene(scene){
         plateModel.scene.position.z += 0.25;//So it can collide with player hitbox
     }
 
-    const linkPlate = await loadModel('src/objects/models/linkPlate.gltf');
+    const linkPlate = await loadModel('/objects/models/linkPlate.gltf');
     preparePlate(linkPlate);
 
-    const zoomPlate = await loadModel('src/objects/models/zoomPicturePlate.gltf');
+    const zoomPlate = await loadModel('/objects/models/zoomPicturePlate.gltf');
     preparePlate(zoomPlate);
 
     function addZoomPlate(x, y, link){
@@ -408,7 +408,7 @@ export async function addAssetsOnScene(scene){
     /* --------------------
     ADDING SIGNS
     -------------------- */
-    const sign = await loadModel('src/objects/models/sign.gltf');//Sign model prepared
+    const sign = await loadModel('/objects/models/sign.gltf');//Sign model prepared
     sign.scene.scale.set(0.08,0.08,0.08);
     sign.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
     sign.scene.rotateOnWorldAxis(new THREE.Vector3(0,0,1), MathUtils.degToRad(-90));
@@ -418,7 +418,7 @@ export async function addAssetsOnScene(scene){
 
     /* SCHOOLS */
     for(let i=0; i<2; i++){
-        const signPictures = ['src/objects/textures/epid.png', 'src/objects/textures/iutCalais.png']
+        const signPictures = ['/objects/textures/epid.png', '/objects/textures/iutCalais.png']
         const signCopy = sign.scene.clone();
         signCopy.position.x = 10 + i*5;
         signCopy.position.y = 1.36;
@@ -436,7 +436,7 @@ export async function addAssetsOnScene(scene){
 
     /* PROFESSIONAL EXPERIENCES */
     for(let i=0; i<1; i++){
-        const signPictures = ['src/objects/textures/hachinohe.png'];
+        const signPictures = ['/objects/textures/hachinohe.png'];
         const signCopy = sign.scene.clone();
         signCopy.position.x = -4 - i*5;
         signCopy.position.y = 1.36;
@@ -454,7 +454,7 @@ export async function addAssetsOnScene(scene){
 
     /* SOCIAL NETWORKS */
     for(let i=0; i<1; i++){
-        const signPictures = ['src/objects/textures/github.png'];
+        const signPictures = ['/objects/textures/github.png'];
         const notificationsLinks = ['https://github.com/LJ5O'];
 
         const signCopy = sign.scene.clone();
@@ -487,20 +487,20 @@ export async function addAssetsOnScene(scene){
     signCopy.position.y = 10.7;
     scene.add( signCopy );
 
-    const signPlaneMaterial = new THREE.MeshBasicMaterial({ map:textureLoader.load("src/objects/textures/known_technologies.png") });
+    const signPlaneMaterial = new THREE.MeshBasicMaterial({ map:textureLoader.load("/objects/textures/known_technologies.png") });
     const signPlane = new THREE.Mesh(SignPlanegeometry, signPlaneMaterial);
     signPlane.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
     signPlane.position.set( signCopy.position.x + 0.06, signCopy.position.y - 0.015, 1.65);// Determined by hand
     scene.add(signPlane);
     
     //Zoom picture plate
-    addZoomPlate(-12, 9.5, "src/objects/textures/known_technologies.png");
+    addZoomPlate(-12, 9.5, "/objects/textures/known_technologies.png");
 
     /* --------------------
     FLOWERS GARDEN
     -------------------- */
     //Loading flowers
-    const flowerModel = await loadModel('src/objects/models/flower.gltf');
+    const flowerModel = await loadModel('/objects/models/flower.gltf');
     flowerModel.scene.scale.set(0.75,0.75,0.75);
     flowerModel.scene.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));//Must be standing up
     alignGround(ground, flowerModel.scene);
@@ -570,11 +570,11 @@ export async function addAssetsOnScene(scene){
     /* --------------------
     ADDING GRASS
     -------------------- */
-    const grass1 = await loadModel('src/objects/models/grass/grass1.gltf');
-    const grass2 = await loadModel('src/objects/models/grass/grass2.gltf');
-    const grass3 = await loadModel('src/objects/models/grass/grass3.gltf');
-    const grass4 = await loadModel('src/objects/models/grass/grass4.gltf');
-    const grass5 = await loadModel('src/objects/models/grass/grass5.gltf');
+    const grass1 = await loadModel('/objects/models/grass/grass1.gltf');
+    const grass2 = await loadModel('/objects/models/grass/grass2.gltf');
+    const grass3 = await loadModel('/objects/models/grass/grass3.gltf');
+    const grass4 = await loadModel('/objects/models/grass/grass4.gltf');
+    const grass5 = await loadModel('/objects/models/grass/grass5.gltf');
     const grassModels = [grass1,grass2,grass3,grass4,grass5, flowerModel];// Planned for later : https://threejs.org/docs/#api/en/objects/InstancedMesh
 
     for (let i = 0; i < grassModels.length; i++) {
@@ -626,7 +626,7 @@ export async function addAssetsOnScene(scene){
     /* --------------------
     ADDING PLAYER
     -------------------- */
-    const player = await loadModel('src/objects/models/player.gltf');//Loading player
+    const player = await loadModel('/objects/models/player.gltf');//Loading player
     player.scene.scale.set(0.2,0.2,0.2);
     //player.scene.position.set(10,0.36,0);
     alignGround(ground, player.scene);
