@@ -269,7 +269,7 @@ export async function addAssetsOnScene(scene){
         scene.add(treeAppleOakModelClone);
     });
 
-    const OakTreeLocations = [{x:-4.5,y:4.8}, {x:-3.1,y:9.8}, {x:-7.15,y:13}, {x:-20,y:6}, {x:-17.4,y:14.3}, {x:-14,y:21.5}, {x:-4.5,y:16}, {x:-11.7,y:15.46}, {x:-5.9,y:19.45},
+    const OakTreeLocations = [{x:-4.5,y:4.8}, {x:-7.15,y:13}, {x:-20,y:6}, {x:-17.4,y:14.3}, {x:-14,y:21.5}, {x:-4.5,y:16}, {x:-11.7,y:15.46}, {x:-5.9,y:19.45},
         {x:-21.6,y:19.5}, {x:6,y:4.26}, {x:3.18,y:7}, {x:10.6,y:2.96}, {x:10.1,y:7.36}, {x:6.78,y:10.03}, {x:3.57,y:12.7}, {x:9.34,y:15}, {x:6.55,y:18}, {x:15.76,y:17.7},
         {x:3.6,y:20}, {x:12,y:16.65}, {x:9.5,y:20.5}, {x:16.15,y:22.3}, {x:19.95,y:18.1}, {x:19.7,y:13.2}, {x:22.5,y:9.5} , {x:20.4,y:6.9}, {x:16.2,y:6.2}, {x:21,y:-9.67},
         {x:18.6,y:3.6}, {x:3.5,y:4}, {x:3.4,y:-4.3}, {x:8,y:-3}, {x:6.7,y:-6.7}, {x:11.26,y:-5.8}, {x:14,y:-7}, {x:13.3,y:-3.7}, {x:19,y:-2.5}, {x:21.8,y:-5.5}, {x:22.6,y:-14.6},
@@ -513,6 +513,27 @@ export async function addAssetsOnScene(scene){
     spokenLanguagesPlane.position.set( spokenLanguagesSign.position.x + 0.06, spokenLanguagesSign.position.y - 0.015, 1.65);// Determined by hand
     scene.add(spokenLanguagesPlane);
     addZoomPlate(19.9, 10.2, "/objects/textures/spoken_languages.png");
+
+        /* PROJECTS */
+        for(let i=0; i<2; i++){
+            const signPictures = ['/objects/textures/disblock.png', '/objects/textures/portfolio.png'];
+            const notificationsLinks = ['https://disblock.xyz/', 'https://github.com/LJ5O/portfolio/'];
+    
+            const signCopy = sign.scene.clone();
+            signCopy.position.x = -2.78;
+            signCopy.position.y = 6 + i*4;
+            scene.add( signCopy );
+    
+            const signPlaneMaterial = new THREE.MeshBasicMaterial({ map:textureLoader.load(signPictures[i]) });
+            const signPlane = new THREE.Mesh(SignPlanegeometry, signPlaneMaterial);
+            signPlane.rotateOnWorldAxis(new THREE.Vector3(1,0,0), MathUtils.degToRad(90));
+            signPlane.position.set( signCopy.position.x + 0.06, signCopy.position.y - 0.013, 1.65);//Determined by hand
+            scene.add(signPlane);
+    
+            //ADDING LINK PLATES
+            addLinkPlate(-2.78, 5 + i*4, notificationsLinks[i]);
+    
+        }
     
     /* --------------------
     FLOWERS GARDEN
