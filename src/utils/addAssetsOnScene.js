@@ -405,6 +405,21 @@ export async function addAssetsOnScene(scene){
         plates.push(zoomPlateClone);
     }
 
+    function addLinkPlate(x, y, link){
+        //Function used to add easily a link plate in the scene
+        const linkPlateClone = linkPlate.scene.clone();
+        linkPlateClone.position.y = y;
+        linkPlateClone.position.x = x;
+    
+        scene.add( linkPlateClone );
+
+        linkPlateClone.onEnterHitbox = ()=>{Notifications.showNotification("Vous pouvez ouvrir ce lien avec la touche Entrée, ou en cliquant <a target=\"_blank\" href=\""+link+"\">ici</a> !",
+        ()=>{Notifications.openLink(link)} )};
+        linkPlateClone.onLeaveHitbox = ()=>{Notifications.hideNotification()};
+
+        plates.push(linkPlateClone);
+    }
+
     /* --------------------
     ADDING SIGNS
     -------------------- */
@@ -469,15 +484,7 @@ export async function addAssetsOnScene(scene){
         scene.add(signPlane);
 
         //ADDING LINK PLATES
-        const linkPlateClone = linkPlate.scene.clone();
-        linkPlateClone.position.y = 0.5;
-        linkPlateClone.position.x = -20.3 + i*5;
-    
-        scene.add( linkPlateClone );
-        linkPlateClone.onEnterHitbox = ()=>{Notifications.showNotification("Vous pouvez ouvrir ce lien avec la touche Entrée, ou en cliquant <a target=\"_blank\" href=\""+notificationsLinks[i]+"\">ici</a> !",
-            ()=>{Notifications.openLink(notificationsLinks[i])} )};
-            linkPlateClone.onLeaveHitbox = ()=>{Notifications.hideNotification()};
-        plates.push(linkPlateClone);
+        addLinkPlate(-20.3 + i*5, 0.5, notificationsLinks[i]);
 
     }
 
