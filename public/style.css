@@ -69,6 +69,7 @@ a {
 	height: 50px;
 	z-index: 102;
 	background-color: #2E86AB;
+	opacity: 0.8;
 }
 
 #key_up{
