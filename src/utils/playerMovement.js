@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import * as MathUtils from 'three/src/math/MathUtils.js';
+import $ from 'jquery';
 
 const PLAYER_SPEED = 0.015;
 const ROTATION_SPEED = 0.05; // Vitesse de rotation
@@ -44,6 +45,33 @@ export function handleKeyDown(event) {
         break;
     }
   }
+
+  export function initPhoneMovement() {
+    // Used to define some functions that will handle movement on phones
+    $('#key_up').on('mouseenter', function() {
+        playerDirection.y = 1; // Button pressed, going up
+    }).on('mouseleave', function() {
+        playerDirection.y = 0; // Button released, stop
+    });
+
+    $('#key_down').on('mouseenter', function() {
+        playerDirection.y = -1;
+    }).on('mouseleave', function() {
+        playerDirection.y = 0;
+    });
+
+    $('#key_left').on('mouseenter', function() {
+        playerDirection.x = -1;
+    }).on('mouseleave', function() {
+        playerDirection.x = 0;
+    });
+
+    $('#key_right').on('mouseenter', function() {
+        playerDirection.x = 1;
+    }).on('mouseleave', function() {
+        playerDirection.x = 0;
+    });
+}
 
   export function updatePlayerPositionAnimation(player, camera, scene) {
     /* Function called in the main loop

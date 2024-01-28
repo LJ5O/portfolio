@@ -30,6 +30,8 @@ addAssetsOnScene(scene).then(assets => {
   // Events to listen keyboard inputs
   document.addEventListener('keydown', PlayerMovement.handleKeyDown);
   document.addEventListener('keyup', PlayerMovement.handleKeyUp);
+  PlayerMovement.initPhoneMovement();
+
 
   /* --------------------- */
   /* |     ANIMATIONS    | */

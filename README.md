@@ -4,7 +4,7 @@
 
 ## About it
 
-You can visit my portfilio here : https://that-it-guy.dev/. This project isn't really phone-compatible for now, but I'm planning to add phone-compatibility.
+You can visit my portfilio here : https://that-it-guy.dev/. This project **isn't really phone-friendly** for now, but I'm planning to add a website adapted to phones.
 
 I made it with **[Three.js](https://threejs.org/)**, and used **Blender** to create 3D models and animations.
 
@@ -18,9 +18,9 @@ I'll try to keep this up to date, and to enhance the project from time to time.
 - [x] Camera placement and player movement
 - [x] Create some gltf models and apply textures/colours on them
 - [x] Add some facts about me on signs
+- [x] Add a phone version
 - [ ] Add a loading screen
 - [ ] Add a menu, so users can chose a language, ect..
-- [ ] Add a phone version
 - [ ] Add English and Japanese versions
 - [ ] Create a simple website with everything on it, so people who don't like walking from signs to signs can find quickly information
 - [ ] Find something to add on this list
