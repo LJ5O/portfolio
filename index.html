@@ -4,8 +4,15 @@
 		<meta charset="utf-8">
 		<title>Kévin Sailly - Portfolio</title>
 		<link rel="stylesheet" href="/style.css">
+		<link rel="stylesheet" href="/menu.css">
 	</head>
 	<body>
+		<!-- That menu is shown at startup, so users can choose their settings -->
+		<div id="menu">
+			<h1>Hello world !</h1>
+			<button>Start</button><!-- See menu.js for threejs startup -->
+		</div>
+
 		<div id="loading">
 			<p>Chargement...<br>Loading...</p>
 		</div>
@@ -22,6 +29,7 @@
 			<div id="key_down"><img src="/objects/textures/arrow.png" width="100%" height="100%" style="transform: rotate(180deg);"/></div>
 			<div id="key_right"><img src="/objects/textures/arrow.png" width="100%" height="100%" style="transform: rotate(90deg);"/></div>
 		</div>
+		<script type="module" src="/src/menu.js"></script>
 		<script type="module" src="/src/main.js"></script>
 		
 	</body>
