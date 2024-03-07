@@ -10,9 +10,14 @@
     z-index: -1;
 }
 
+#menu * {
+    color: #EAEAEA;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 #menu h1{
    position: absolute;
-   top:20%;
+   top:10%;
    left:50%;
    transform: translate(-50%,-50%);
    font-size: 3em;
@@ -20,9 +25,16 @@
    color: #EAEAEA;
 }
 
+#menu h2{
+    position: absolute;
+    top: calc( 10% + 3em );
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+
 #menu button{
     position: absolute;
-    top: 70%;
+    top: 80%;
     left: 50%;
     transform: translate(-50%,-50%);
     padding-left: 50px;
@@ -33,10 +45,54 @@
     border: 2px #4f5c69 solid;
     background-color: #2E86AB;
     font-size: 1.5em;
-    color: #EAEAEA;
-    font-family: Arial, Helvetica, sans-serif;
 }
 #menu button:hover{
     background-color: #46aad4;
     border: 4px #4f5c69 solid;
+}
+
+#settings{
+    position: absolute;
+    top: 30%;
+    left: 15%;
+    right: 15%;
+    min-height: 30%;
+    max-height: 40%;
+    /*border: red dotted 2px;*/
+    display: flex;
+}
+#settings div{
+    flex: auto;
+    margin: 10px;
+}
+/*#settings #quality{
+    border: green dotted 2px;
+}
+#settings #language{
+    border: yellow dotted 2px;
+}*/
+
+#quality label{
+    margin-top:20px;
+}
+#quality label,select{
+    margin-left: 50%;
+    transform: translateX(-50%);
+    display: inline-block;
+}
+#quality-select{
+    margin-top:5px;
+    font-size: 1em;
+    background-color: #1d3a5c;
+    border: 1px solid #1d3a5c;
+    outline: none;
+    border-radius: 5px;
+    width: 50%;
+    max-width: 200px;
+    padding: 8px;
+    cursor: pointer;
+}
+#quality-select option{
+    padding: 8px;
+    background-color: #1d3a5c;
 }
