@@ -22,11 +22,30 @@ function alignGround(ground, MovingObject) {
 }
 
 
-export async function addAssetsOnScene(scene){
+export async function addAssetsOnScene(scene, quality){
     /*This function takes the scene as arg, and is used to load everything needed on the terrain.
+    It also takes a quality setting, that is used to determine if we can place every assets, or if we must limit the number of non-important props on screen.
+    Ex of quality value : "0.8" for 80% of trees loaded
+
     Player, trees, fences, and everything displayed on the screen is added by this function, at the right place
     
-    Will return an object containing created objects*/
+    Will return an object containing created objects. /!\ Object may not hold props not animated or useless, I'll work on this later*/
+
+
+    // This one is used when placing models on the scene, that aren't important
+    // According to the quality setting, we may not place some trees, or grass, so we spare some RAM and CPU
+    // This will act as a random function that will return true or false, randomly
+    const percentageOfObjectsToPlace = Number(quality)*100;
+    function shouldIPlaceThisModel(){
+        if(percentageOfObjectsToPlace==100)return true;
+
+        const randomNumberBetween1And100 = Math.floor(Math.random() * 101);
+        if(percentageOfObjectsToPlace >= randomNumberBetween1And100){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     scene.add(new THREE.AmbientLight(0x404040, 50));//Light, required to see
 
@@ -228,6 +247,14 @@ export async function addAssetsOnScene(scene){
     prepareTree(treeSakuraModel);
     prepareTree(treePineModel);
 
+    function placeTree(clone, pos){
+        if(!shouldIPlaceThisModel())return;
+        clone.position.x = pos.x;
+        clone.position.y = pos.y;
+        clone.rotation.y = Math.random() * Math.PI * 2;
+        scene.add(clone);
+    }
+
     const forestPinesLocations = [{x:-3,y:-3}, {x:-4,y:-5.9}, {x:-6.5,y:-4.3}, {x:-9.1,y:-3.1}, {x:-12.8,y:-4.35}, {x:-15.7,y:-3.3}, {x:-19.6,y:-2.6}, {x:-22.2,y:-5.3}, {x:-9.7,y:-6.2}
         , {x:-15.7,y:-7}, {x:-18.9,y:-5.8}, {x:-20.8,y:-8.5}, {x:-17.5,y:-9.6}, {x:-12.9,y:-8.45}, {x:-9.76,y:-9.6}, {x:-20.8,y:-8.5}, {x:-6.75,y:-8.25}, {x:-23,y:-10.5}
         , {x:-21,y:-11.9}, {x:-2.9,y:-8.4}, {x:-18.6,y:-12.4}, {x:-15,y:-10.8}, {x:-11.9,y:-8.4}, {x:-11.9,y:-10.8}, {x:-9,y:-12.45}, {x:-5,y:-10.3}, {x:-1.87,y:-10.9}
@@ -239,10 +266,7 @@ export async function addAssetsOnScene(scene){
 
     forestPinesLocations.forEach(newPos => {
         const pineClone = treePineModel.scene.clone();
-        pineClone.position.x = newPos.x;
-        pineClone.position.y = newPos.y;
-        pineClone.rotation.y = Math.random() * Math.PI * 2;
-        scene.add(pineClone);
+        placeTree(pineClone, newPos);
     });
 
     const sakuraLocations = [{x:6.49, y:-9.89}, {x:9.1, y:-10.47}, {x:10.42, y:-9.44}, {x:12.6, y:-10.5}, {x:14.01, y:-9.89}, {x:15.6, y:-9.71}, {x:17.3, y:-10.4}, {x:18.81, y:-9.62},
@@ -252,10 +276,7 @@ export async function addAssetsOnScene(scene){
 
     sakuraLocations.forEach(newPos => {
         const sakuraClone = treeSakuraModel.scene.clone();
-        sakuraClone.position.x = newPos.x;
-        sakuraClone.position.y = newPos.y;
-        sakuraClone.rotation.y = Math.random() * Math.PI * 2;
-        scene.add(sakuraClone);
+        placeTree(sakuraClone, newPos);
     });
 
     const appleTreeLocations = [{x:-15.25,y:9.92}, {x:-9.02,y:9.92}, {x:-15.25,y:7.92}, {x:-9.02,y:7.92}, {x:-15.25,y:5.92}, {x:-9.02,y:5.92}, {x:-15.25,y:3.92}, {x:-9.02,y:3.92},
@@ -263,10 +284,7 @@ export async function addAssetsOnScene(scene){
 
     appleTreeLocations.forEach(newPos => {
         const treeAppleOakModelClone = treeAppleOakModel.scene.clone();
-        treeAppleOakModelClone.position.x = newPos.x;
-        treeAppleOakModelClone.position.y = newPos.y;
-        treeAppleOakModelClone.rotation.y = Math.random() * Math.PI * 2;
-        scene.add(treeAppleOakModelClone);
+        placeTree(treeAppleOakModelClone, newPos);
     });
 
     const OakTreeLocations = [{x:-4.5,y:4.8}, {x:-7.15,y:13}, {x:-20,y:6}, {x:-17.4,y:14.3}, {x:-14,y:21.5}, {x:-4.5,y:16}, {x:-11.7,y:15.46}, {x:-5.9,y:19.45},
@@ -278,10 +296,7 @@ export async function addAssetsOnScene(scene){
 
     OakTreeLocations.forEach(newPos => {
         const OakTreeClone = treeOakModel.scene.clone();
-        OakTreeClone.position.x = newPos.x;
-        OakTreeClone.position.y = newPos.y;
-        OakTreeClone.rotation.y = Math.random() * Math.PI * 2;
-        scene.add(OakTreeClone);
+        placeTree(OakTreeClone, newPos);
     });
 
     /* --------------------
@@ -631,6 +646,7 @@ export async function addAssetsOnScene(scene){
       }
 
       for (let i = 0; i < 140; i++) {
+        if(!shouldIPlaceThisModel())continue;
         let choosenGrassModel;
         let collision;
 

@@ -6,7 +6,8 @@ import * as Animations from './utils/animateMesh.js';
 import * as PlayerCollisions from './utils/playerCollisions.js';
 
 // Function used to start Threejs, called from index.html
-function startThreeJS(){
+// Quality is the percentage of props to place. Ex : "0.8"
+function startThreeJS(quality){
   let Clock = new THREE.Clock();
   THREE.Cache.enabled = true;//So we can request several time the same file without worrying : https://threejs.org/docs/#api/en/loaders/FileLoader
 
@@ -24,7 +25,7 @@ function startThreeJS(){
   document.body.appendChild( renderer.domElement );
 
   //Here, we create/load every asset used, and add it in the scene
-  addAssetsOnScene(scene).then(assets => {
+  addAssetsOnScene(scene, quality).then(assets => {
 
     /* --------------------- */
     /* |      MOVEMENT     | */
