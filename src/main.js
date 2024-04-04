@@ -60,6 +60,7 @@ function startThreeJS(quality){
 
     }
     console.log("Ready to render scene, placed objects : "+scene.children.length);
+    document.stopLoadingAnimation();
     animate();
     
   });
