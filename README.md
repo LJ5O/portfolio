@@ -4,7 +4,7 @@
 
 ## About it
 
-You can visit my portfilio here : https://that-it-guy.dev/. This project **isn't really phone-friendly** for now, but I'm planning to add a website adapted to phones.
+You can visit my portfilio here : https://portfolio.taccoen.dev/. This project **isn't really phone-friendly** for now, but I'm planning to add a website adapted to phones.
 
 I made it with **[Three.js](https://threejs.org/)**, and used **Blender** to create 3D models and animations.
 
